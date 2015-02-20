@@ -1,0 +1,2 @@
+# intern_javascript_game
+インターン生が中心で作成したゲーム
