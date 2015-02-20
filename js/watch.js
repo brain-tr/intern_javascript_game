@@ -1,46 +1,68 @@
-function watch(){
-    var game = new Game(window.innerWidth, window.innerHeight);
+function create(){
+    var game = new Core(700, 500);
     game.fps = 24;
-    game.preload('./img/WatchFrame.png'); 
+    game.preload('./img/back.jpg','./img/long2.png','./img/short2.png','./img/WatchFrame.png'); 
     game.onload = function() { 
         var time = new Group();
-        
+
+        /* 背景 */
+        //時計用スプライトの作成
+        var back = new Sprite(800, 800);
+        //スプライトに画像を設定
+        back.image = game.assets['./img/back.jpg'];
+
+
         /* 時計の外枠作成 */
         //時計用スプライトの作成
-        var clock = new Sprite(480, 480);
-
-        //画像の大きさを調整
-        clock.scale(0.5,0.5);
-        
+        var clock = new Sprite(100, 100);
+        //画像の位置を指定
+        clock.x = 580;
+        clock.y = 20;
         //スプライトに画像を設定
         clock.image = game.assets['./img/WatchFrame.png'];
 
-        //時計の位置を相対的に決める
-        clock.x = window.innerWidth-450;
-        clock.y = -60;
-        
-        /* 時計の針作成 */
-        //Spriteを作ります
-        sprite = new Sprite(480,480);        
-        //Surfaceを作ります
-        surface = new Surface(480,480);
-        
-        //spriteのimageにsurfaceを代入します
-        sprite.image = surface;
-        
-        //コンテキストを取得します
-        context = surface.context;
-        
-        
-        surface.context.strokeStyle = "red";
-surface.context.strokeRect (0, 100, 100, 0);
-        sprite.x = window.innerWidth-300;
-        sprite.y = 80;
-        
-        
-        //完成した2つのレイヤーを結合
+
+        /* 時計の針 */
+        //長針
+        var long = new Sprite(50,12);
+        long.image = game.assets['./img/long2.png'];
+        long.x = 625;
+        long.y = 65;
+        long.originX = 5;
+        long.originY = 6;
+        long.rotation = longTimes[longCount];
+
+        //短針
+        var short = new Sprite(35,12);
+        short.image = game.assets['./img/short2.png'];
+        short.x = 625;
+        short.y = 65;
+        short.originX = 5;
+        short.originY = 5;
+        short.rotation = shortTimes[shortCount];
+
+        long.addEventListener('touchend',function(){ //イベントリスナーを追加する
+            //長針のカウンタを更新し、針を動かす
+            longCount++;
+            //カウンタが１週していたら0に戻して短針を動かす
+            if(longCount == 6){
+                longCount = 0;
+                shortCount++;
+                if(shortCount == 12){
+                    shortCount = 0;
+                }
+                short.rotation = shortTimes[shortCount];
+
+            }
+            long.rotation = longTimes[longCount];
+        });
+
+
+        //完成したレイヤーを結合
+        time.addChild(back);
         time.addChild(clock);
-        time.addChild(sprite);
+        time.addChild(short);
+        time.addChild(long);
 
         game.rootScene.addChild(time);
     }

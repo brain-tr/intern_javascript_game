@@ -5,37 +5,25 @@
         <title>経営ゲーム | 株式会社ブレイントラスト</title>
         <script src="js/lib/enchant.js"></script>
         <script src="js/watch.js"></script>
-        <style>
-            body {
-                padding: 0;
-                margin:  0;
-                /* 画像ファイルの指定 */
-                background-image: url(http://www.itoki.jp/udeco/spotlight/images/plo_main.jpg);
-
-                /* 画像を常に天地左右の中央に配置 */
-                background-position: center center;
-
-                /* 画像をタイル状に繰り返し表示しない */
-                background-repeat: no-repeat;
-
-                /* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
-                background-attachment: fixed;
-
-                /* 表示するコンテナの大きさに基づいて、背景画像を調整 */
-                background-size: cover;
-
-                /* 背景画像が読み込まれる前に表示される背景のカラー */
-                background-color: #464646;
-            }
-        </style>
         <script>
             enchant();
             window.onload = function() {
-               watch();
+                longTimes = [270,330,30,90,150,210];
+                shortTimes = [270,300,330,360,30,60,90,120,150,180,210,240];
+                longCount = 0;
+                shortCount = 10;
+                create();
             };
+            function load(){
+                long.addEventListener('touchend',function(){ //イベントリスナーを追加する
+                    //touchendイベントのイベントリスナー
+                    this.rotation = longTimes[1];
+                });
+            }
         </script>
     </head>
     <body>
         <!-- ここにゲームが表示されます。 -->
+        <div id="enchant-stage"></div>
     </body>
 </html>
