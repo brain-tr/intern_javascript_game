@@ -40,7 +40,8 @@ function create(){
         short.originX = 5;
         short.originY = 5;
         short.rotation = shortTimes[shortCount];
-
+        
+        //時間の制御を行う
         long.addEventListener('touchend',function(){ //イベントリスナーを追加する
             //長針のカウンタを更新し、針を動かす
             longCount++;
@@ -52,6 +53,14 @@ function create(){
                     shortCount = 0;
                 }
                 short.rotation = shortTimes[shortCount];
+                //19時になったら業務を終了し、次の日へ
+                if(shortCount == 7){
+                    short.rotation = shortTimes[7];
+                    long.rotation = longTimes[0];
+                    window.setTimeout(alert("業務を終了しました。次の日になります。"), 1000);
+                    shortCount = 10;
+                    short.rotation = shortTimes[shortCount];
+                }
 
             }
             long.rotation = longTimes[longCount];
