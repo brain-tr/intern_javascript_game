@@ -1,0 +1,6 @@
+constructor.js…ゲーム開始時に呼ぶjs、タイトル画面からスタートボタンが押された際に実行する
+createGameScene.js…ゲーム画面の初期状態を呼び出す
+createIcon…案件・人材アイコンの生成
+matching.js…マッチングのシーンを呼び出す
+matchingTime.js…マッチング実行時の時計を進める処理
+matteran.js…案件・人材の処理を記載する予定

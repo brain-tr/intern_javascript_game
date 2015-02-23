@@ -4,15 +4,27 @@
         <meta charset="utf-8">
         <title>経営ゲーム | 株式会社ブレイントラスト</title>
         <script src="js/lib/enchant.js"></script>
-        <script src="js/watch.js"></script>
+        <script src="js/createGameScene .js"></script>
+        <script src="js/constructor.js"></script>
+        <script src="js/matteran.js"></script>
+        <script src="js/matching.js"></script>
+        <script src="js/matchingTime.js"></script>
+        <script src="js/createIcon.js"></script>
         <script>
             enchant();
             window.onload = function() {
-                longTimes = [270,330,30,90,150,210];
-                shortTimes = [270,300,330,360,30,60,90,120,150,180,210,240];
-                longCount = 0;
-                shortCount = 10;
-                create();
+
+                //ゲーム内変数の初期化
+                constructor();
+                game = new Core(700, 500);
+                game.fps = 24;
+                //ゲームにつかう画像を予め読み込んでおく
+                game.preload('./img/back.jpg','./img/long2.png','./img/short2.png','./img/WatchFrame.png'); 
+                game.onload = function() { 
+                    //ルートシーンの作成
+                    createGameScene();
+                }
+                game.start();
             };
             function load(){
                 long.addEventListener('touchend',function(){ //イベントリスナーを追加する
@@ -25,5 +37,7 @@
     <body>
         <!-- ここにゲームが表示されます。 -->
         <div id="enchant-stage"></div>
+        <button onclick="createIcon();">案件生成</button>
+        <h1><span id="tuki">4</span>月<span id="syu">1</span>週　残り<span id="end">48</span></h1>
     </body>
 </html>
