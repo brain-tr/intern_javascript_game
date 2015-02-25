@@ -2,24 +2,25 @@ var createGameScene  = function(){
     time = new Group();
 
     /* 背景 */
-    back = new Sprite(800, 800);
+    back = new Sprite(700, 500);
     //スプライトに画像を設定
     back.image = game.assets['./img/back.jpg'];
-    
+
     /* 情報表示部分 */
     bord = new Sprite(500,150);
     bord.backgroundColor = "#0f0";
-    
+
     /* マッチングボタン */
     machButton = new Sprite(150,50);
     machButton.backgroundColor = "#00f";
     machButton.x = 350;
     machButton.y = 100;
-    
+
     machButton.addEventListener(Event.TOUCH_START,function(e){
         matching();
     });
-    
+
+    /* マッチングレーベル */
     machLabel = new Label("マッチング");
     machLabel.x = 355;
     machLabel.y = 110;
@@ -27,7 +28,7 @@ var createGameScene  = function(){
     machLabel.addEventListener(Event.TOUCH_START,function(e){
         matching();
     });
-    
+
 
     /* 時計の外枠作成 */
     //時計用スプライトの作成

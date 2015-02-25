@@ -46,7 +46,7 @@ window.onload = function() {
         *
         * ゲームシーンを作り、返す関数です。
         */
-            var createGameScene = function() {
+        var createGameScene = function() {
             var scene = new Scene();                            // 新しいシーンを作る
             scene.backgroundColor = '#fcc8f0';
 
@@ -58,7 +58,7 @@ window.onload = function() {
             scene.addChild(label);                                // シーンに追加
             // 残り時間欄を作成
             var timeLimit = new Label('残り時間:' + time);       // 残り時間: ○○と表示するラベルを作る
-            timeLimit.font = '14px sans-serif';                 // 14pxのゴシック体にする 
+            timeLimit.font = '14px sans-serif';                 // 14pxのゴシック体にする
             timeLimit.x = 0;                                    // 横位置調整
             timeLimit.y = 20;                                   // 縦位置調整
             scene.addChild(timeLimit);                          // シーンに追加
