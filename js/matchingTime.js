@@ -32,9 +32,14 @@ function matchingTime(){
         document.getElementById("tuki").innerHTML = month;
         document.getElementById("syu").innerHTML = week;
         document.getElementById("end").innerHTML = end;
+        dateinfo.text = "日付: "+String(month)+"月"+String(week)+"週";
+        restinfo.text = "残り: "+String(end)+"週";
+        time.addChild(dateinfo);
+        time.addChild(restinfo);
     }
     //完成したレイヤーを結合
     time.addChild(clock);
     time.addChild(short);
     time.addChild(long);
+    date.text = "aaa";
 }
