@@ -23,7 +23,7 @@ var createGameScene  = function(){
     long.y = 65;
     long.originX = 5;
     long.originY = 6;
-    long.rotation = longTimes[minutes];
+    long.rotation = times[minutes];
 
     //短針
     short = new Sprite(35,12);
@@ -32,7 +32,7 @@ var createGameScene  = function(){
     short.y = 65;
     short.originX = 5;
     short.originY = 5;
-    short.rotation = shortTimes[hours];
+    short.rotation = times[hours];
 
     // 情報表示部分
     bord = new Sprite(500,150);                             // スプライトを作る

@@ -9,18 +9,18 @@ var matching = function(){
         var scene = new Scene();
         scene.backgroundColor = '#fcc8f0';
 
-        var label = new Label('マッチングの実行');            // ラベルを作る スコアを代入
-        label.textAlign = 'center';                                // 文字を中央寄せ
-        label.color = '#fff';                                      // 文字を白色に
-        label.x = 0;                                               // 横位置調整
-        label.y = 60;                                              // 縦位置調整
-        label.font = '40px sans-serif';                   // 40pxのゴシック体にする
+        var label = new Label('マッチングの実行');      // ラベルを作る スコアを代入
+        label.textAlign = 'center';                   // 文字を中央寄せ
+        label.color = '#fff';                         // 文字を白色に
+        label.x = 0;                                  // 横位置調整
+        label.y = 60;                                 // 縦位置調整
+        label.font = '40px sans-serif';               // 40pxのゴシック体にする
         
         //作成したレイヤーにイベントリスナーをつける
         label.addEventListener(Event.TOUCH_START,function(e){
             
             //時計を進める
-            matchingTime();
+            timeEnter(120);
             
             //ルートシーンへ戻る
             game.popScene();
