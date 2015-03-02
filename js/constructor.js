@@ -11,10 +11,46 @@ function constructor(){
     level = 1;          //営業LV
     createFlag = true;  //アイコン発生フラグ
     
+    /* 案件用変数 */
+    matterInfo = null;  //表示用案件情報
+    matters = null;     //案件情報
+    
+    
+    /* 人材用変数 */
+    personInfo = null;  //表示用人材情報
+    persons = [];     //人材情報
+    
     //使用するスキル一覧
-    skills = ["PHP","C","C#","JavaScript"];
-    //難易度別の背景色
-    colors = ["#4a86e8","#00ffff","#fff2cc","#f9cb9c","#e06666"];
+    skills = [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S",
+        "T",
+        "U",
+        "V",
+        "W",
+        "X",
+        "Y"
+    ];
+    
+    //備考一覧
+    remarks = [];
     
     //針が差す位置（短針長針が変わらないのでまとめました。）
     times = [270,300,330,360,30,60,90,120,150,180,210,240];

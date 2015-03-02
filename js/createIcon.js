@@ -7,30 +7,31 @@ function createIcon(){
         //アイコン表示用のグループ生成
         var icon = new Group();
         //アイコンの背景
-        var back = new Sprite(48, 48);
-        var surface = new Surface(48, 48);	// サーフェス生成
+        var back = new Sprite(72, 48);
 
         //１．１．案件か人材か抽選し更に難易度の抽選を行う
-        // 0:人材 1:案件
+        // 0:案件 1:人材
         var choseFlag = Math.floor(Math.random()*2);
-        if(choseFlag){
+        if(0){
             //どの案件かを抽選
             matterNum = Math.floor(Math.random()*skills.length);
-            //難易度を抽選
-            difficulty = Math.floor((Math.random()*5));
             //表示する文字
             var label = new Label(skills[matterNum]);
-            label.x = 0;
+            label.x = 20;
             label.y = 15;
+            
+            //難易度を抽選
+            var difficulty = Math.floor((Math.random()*5));
 
             //１．２．アイコンをクリックした時に呼び出す処理を設定する。
             icon.addEventListener(Event.TOUCH_START,function(e){
 
                 //１．２．１．（共通変数）案件数のカウントアップ
                 matter++;
-
-                //１．２．２．（時計進行）に引数として30を渡す。
-                matteran();
+                matterinfo.text = "案件数:   "+String(matter)+"個";
+                
+                //１．２．２. 人材追加メソッドの実行
+                matteran(difficulty);
 
                 //１．２．３．アイコン削除
                 this.parentNode.removeChild( this );
@@ -38,10 +39,10 @@ function createIcon(){
             });
         }else{
             //レベルを抽選
-            difficulty = Math.floor((Math.random()*5));
+            var difficulty = Math.floor((Math.random()*5));
             //表示する文字
             var label = new Label("人材");
-            label.x = 0;
+            label.x = 20;
             label.y = 15;
 
             //１．２．アイコンをクリックした時に呼び出す処理を設定する。
@@ -49,22 +50,17 @@ function createIcon(){
 
                 //１．２．１．（共通変数）人材数のカウントアップ
                 person++;
+                personinfo.text = "人材数:   "+String(person)+"人";
 
-                //１．２．２．（時計進行）に引数として30を渡す。
-                matteran();
+                //１．２．２. 人材追加メソッドの実行
+                personInsert(difficulty);
 
                 //１．２．３．アイコン削除
                 this.parentNode.removeChild( this );
 
             });
         }
-        
-        //背景用の円を生成
-        surface.context.beginPath();
-        surface.context.arc(25, 25, 23, 0, Math.PI*2, false);
-        surface.context.fillStyle = colors[difficulty];
-        surface.context.fill();
-        back.image = surface;
+        back.image = game.assets['./img/button/button'+ difficulty +'.png']; ;
 
         //グループにアイコンと背景を結合
         icon.addChild(back);
