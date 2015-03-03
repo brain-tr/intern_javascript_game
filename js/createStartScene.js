@@ -36,6 +36,7 @@ var createStartScene = function() {
     // スタート画像にタッチイベントを設定
     startImage.addEventListener(Event.TOUCH_START, function(e) {
         constructor();
+        startfnc();
         game.replaceScene(createGameScene());    // 現在表示しているシーンをゲームシーンに置き換える
     });
     // タイトルシーンを返します。

@@ -15,6 +15,14 @@
         <script src="js/createIcon.js"></script>
         <script src="js/main.js"></script>
         <script src="js/weekEnd.js"></script>
+        <script>
+        function startfnc(){
+            var maxTime = 3000;
+            var minTime = 1000;
+            var rand = Math.floor(Math.random() * (maxTime - minTime) + minTime);
+            setInterval("createIcon()",rand);
+        }
+        </script>
         <style>
         /* ウィンドウとゲーム画面のすき間をなくします */
         body {
@@ -27,6 +35,5 @@
         <!-- ここにゲームが表示されます。 -->
         <div id="enchant-stage"></div>
         <button onclick="createIcon();">案件生成</button>
-        <h1><span id="tuki">4</span>月<span id="syu">1</span>週　残り<span id="end">48</span></h1>
     </body>
 </html>

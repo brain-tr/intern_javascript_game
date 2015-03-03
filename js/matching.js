@@ -4,8 +4,13 @@
  *
  */
 var matching = function(){
+    //発生判断フラグをfalseにする
+     createFlag = false;
+    
     //マッチングのシーンを作成
     var matchingScene = function(){
+        
+        
         var scene = new Scene();
         scene.backgroundColor = '#fcc8f0';
 
@@ -18,6 +23,9 @@ var matching = function(){
         
         //作成したレイヤーにイベントリスナーをつける
         label.addEventListener(Event.TOUCH_START,function(e){
+            
+            //発生判断フラグをTrueにする
+            createFlag = true;
             
             //時計を進める
             timeEnter(120);

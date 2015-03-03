@@ -20,9 +20,6 @@ function weekEnd(){
     //６．次週へボタンを表示する。
     //ボタン押下時処理
         //６．１．（共通変数）月、週を変更する。
-        document.getElementById("tuki").innerHTML = month;
-        document.getElementById("syu").innerHTML = week;
-        document.getElementById("end").innerHTML = end;
         dateinfo.text = "日付: "+String(month)+"月"+String(week)+"週";
         restinfo.text = "残り: "+String(end)+"週";
     
