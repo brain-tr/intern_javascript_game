@@ -8,8 +8,8 @@ function personInsert(level){
         //人材のレベルによって処理がわかれる
         switch(level){
         case 0:
-        var minSkil     = 3;
-        var maxSkil     = 5;
+        var minSkill     = 3;
+        var maxSkill     = 5;
         var minSumLevel = 25;
         var maxSumLevel = 25;
         var minPrice    = 16;
@@ -18,8 +18,8 @@ function personInsert(level){
         var maxRemarks  = 3;
         break;
         case 1:
-        var minSkil     = 5;
-        var maxSkil     = 8;
+        var minSkill     = 5;
+        var maxSkill     = 8;
         var minSumLevel = 60;
         var maxSumLevel = 70;
         var minPrice    = 20;
@@ -28,8 +28,8 @@ function personInsert(level){
         var maxRemarks  = 3;
         break;
         case 2:
-        var minSkil     = 7;
-        var maxSkil     = 13;
+        var minSkill     = 7;
+        var maxSkill     = 13;
         var minSumLevel = 130;
         var maxSumLevel = 175;
         var minPrice    = 25;
@@ -38,8 +38,8 @@ function personInsert(level){
         var maxRemarks  = 3;
         break;
         case 3:
-        var minSkil     = 7;
-        var maxSkil     = 17;
+        var minSkill     = 7;
+        var maxSkill     = 17;
         var minSumLevel = 195;
         var maxSumLevel = 289;
         var minPrice    = 35;
@@ -48,8 +48,8 @@ function personInsert(level){
         var maxRemarks  = 4;
         break;
         case 4:
-        var minSkil     = 7;
-        var maxSkil     = 25;
+        var minSkill     = 7;
+        var maxSkill     = 25;
         var minSumLevel = 310;
         var maxSumLevel = 500;
         var minPrice    = 60;
@@ -59,13 +59,13 @@ function personInsert(level){
         break;
     }
 
-    var skilCount = Math.floor(Math.random() * (maxSkil - minSkil) + minSkil);             //所持スキル数
+    var skillCount = Math.floor(Math.random() * (maxSkill - minSkill) + minSkill);             //所持スキル数
     var price = Math.floor(Math.random() * (maxPrice - minPrice) + minPrice);              //単価
     var sumLevel = Math.floor(Math.random() * (maxSumLevel - minSumLevel) + minSumLevel);　//合計レベル
     var sumRemark = Math.floor(Math.random() * (maxRemarks - minRemarks) + minRemarks);  　//備考数
 
     //所持スキルのレベルを決める
-    var personSkills = personSkilChose(skilCount,sumLevel);
+    var personSkills = personSkillChose(skillCount,sumLevel);
     //備考の種類を決める
     var personRemarks = personRemarkChose(sumRemark);
     //人材の作成
@@ -75,7 +75,7 @@ function personInsert(level){
     timeEnter(30);
 }
 
-function personSkilChose(skilCount,sumLevel){
+function personSkillChose(skillCount,sumLevel){
     //スキル数と合計レベルを元に各スキルのレベルを決める
     //スキル抜き出し用のクローン
     var skillsClone = skills.slice();
@@ -87,10 +87,10 @@ function personSkilChose(skilCount,sumLevel){
         //特出型
     }else if(type == 1){
         //バランス型
-        var average = Math.floor(sumLevel / skilCount);
+        var average = Math.floor(sumLevel / skillCount);
 
         //スキルの数から先に入れたスキル１つ引いた数だけループする
-        for(var i = 0; i < skilCount - 1; i++){
+        for(var i = 0; i < skillCount - 1; i++){
 
             //スキルをランダムで決定する
             var skillIndex = Math.floor(Math.random()*skillsClone.length);
