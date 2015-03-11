@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>経営ゲーム | 株式会社ブレイントラスト</title>
         <meta name="viewport" content="width=device-width, user-scalable=no">
+        <script src="js/lib/jquery.js"></script>
         <script src="js/lib/enchant.js"></script>
         <script src="js/time.js"></script>
         <script src="js/createGameScene .js"></script>
@@ -15,20 +16,23 @@
         <script src="js/createIcon.js"></script>
         <script src="js/main.js"></script>
         <script src="js/weekEnd.js"></script>
+        <script src="js/loadBoard.js"></script>
+
         <script>
-        function startfnc(){
-            var maxTime = 3000;
-            var minTime = 1000;
-            var rand = Math.floor(Math.random() * (maxTime - minTime) + minTime);
-            setInterval("createIcon()",rand);
-        }
+            //アイコンの描画
+            function startfnc(){
+                var maxTime = 3000;
+                var minTime = 1000;
+                var rand = Math.floor(Math.random() * (maxTime - minTime) + minTime);
+                setInterval("createIcon()",rand);
+            }
         </script>
         <style>
-        /* ウィンドウとゲーム画面のすき間をなくします */
-        body {
-          padding: 0;
-          margin: 0;
-        }
+            /* ウィンドウとゲーム画面のすき間をなくします */
+            body {
+                padding: 0;
+                margin: 0;
+            }
         </style>
     </head>
     <body>

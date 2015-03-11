@@ -71,11 +71,13 @@ var createGameScene  = function(){
     restinfo.font = "24px 'メイリオ'";　　　　　　　　　　　　　 // フォント設定
     // マッチングボタン
     matchButton = new Sprite(150,50);                       // スプライトを作る
-    matchButton.image = game.assets['./img/match.png'];     // 画像を設定
+    matchButton.image = game.assets['./img/match_no.png'];  // 画像を設定
     matchButton.x = 300;                                    // 横位置調整
     matchButton.y = 85;                                     // 縦位置調整
     matchButton.addEventListener(Event.TOUCH_START,function(e){
-        matching();                                         //イベントを追加する
+        if(matter > 0 && person > 0){
+            matching();                                         //イベントを追加する
+        }
     });
 
     //完成したレイヤーを結合

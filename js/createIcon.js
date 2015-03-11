@@ -14,9 +14,9 @@ function createIcon(){
         var choseFlag = Math.floor(Math.random()*2);
         if(choseFlag){
             //どの案件かを抽選
-            matterNum = Math.floor(Math.random()*skills.length);
+            matterNum = Math.floor(Math.random()*mainSkills.length);
             //表示する文字
-            var label = new Label(skills[matterNum]);
+            var label = new Label(mainSkills[matterNum]);
             label.x = 20;
             label.y = 15;
 
@@ -28,13 +28,29 @@ function createIcon(){
 
                 //１．２．１．（共通変数）案件数のカウントアップ
                 matter++;
-                matterinfo.text = "案件数:   "+String(matter)+"個";
 
-                //１．２．２. 人材追加メソッドの実行
+                //１．２．２. 案件追加メソッドの実行
                 matteran(difficulty);
 
                 //１．２．３．アイコン削除
                 this.parentNode.removeChild( this );
+
+                if(matter > 0 && person > 0){
+                    matchButton.image = game.assets['./img/match.png'];  // 画像を設定
+                }
+
+                //経験値を取得位
+                experience++;
+                //アイコンを押した時にレベルが上がっていたら営業レベルを上げる
+                if(exp[level] == experience){
+                    level++;
+                }
+
+                //左上のボードの更新を行う
+                loadBoard();
+
+                //時間を進める
+                timeEnter(30);
             });
         }else{
             //レベルを抽選
@@ -49,15 +65,32 @@ function createIcon(){
 
                 //１．２．１．（共通変数）人材数のカウントアップ
                 person++;
-                personinfo.text = "人材数:   "+String(person)+"人";
 
                 //１．２．２. 人材追加メソッドの実行
                 personInsert(difficulty);
 
                 //１．２．３．アイコン削除
                 this.parentNode.removeChild( this );
+
+                if(matter > 0 && person > 0){
+                    matchButton.image = game.assets['./img/match.png'];  // 画像を設定
+                }
+
+                //経験値を取得位
+                experience++;
+                //アイコンを押した時にレベルが上がっていたら営業レベルを上げる
+                if(exp[level] == experience){
+                    level++;
+                }
+
+                //左上のボードの更新を行う
+                loadBoard();
+
+                //時間を進める
+                timeEnter(30);
             });
         }
+
         var gametime = 5;
         icon.addEventListener('enterframe',function(e){
             if(game.frame % game.fps == 0 && createFlag){
@@ -67,14 +100,16 @@ function createIcon(){
                     timeEnter(10);
                     this.parentNode.removeChild( this );
                 }
-                    
+
             }
         });
         var x = Math.random()*(700-48);
         var y = Math.random()*(300-48) + 170;
-        
-        movePoint(icon,x,y,20);
 
+        //アイコンの移動方向決定
+        var moveX = Math.random()*(700-48) - x;
+        var moveY = Math.random()*(300-48) + 170 - y;
+        icon.tl.moveBy(moveX, moveY, 30).moveBy(100, 0, 20).moveBy(-100, 30, 20).loop
 
         back.image = game.assets['./img/button/button'+ difficulty +'.png']; ;
 
@@ -82,14 +117,10 @@ function createIcon(){
         icon.addChild(back);
         icon.addChild(label);
 
-        //どの範囲に描画するか指定する
+        //どこに現れたのかを取得しどの範囲に描画するか指定する
         icon.moveTo(x,y);
 
         //１．３．アイコンの描画を行う
         game.rootScene.addChild(icon);
     }
-}
-
-function movePoint(icon,x,y,moveFrame){
-    icon.tl.moveBy(30, 50, moveFrame).moveBy(156, -350, moveFrame).loop()
 }
