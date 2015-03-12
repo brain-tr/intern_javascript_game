@@ -1,4 +1,4 @@
-function requiredSkillChose(requiredSkillSum,matteranLevel){
+function requiredSkillChose(requiredSkillSum,matteranLevel,level){
 
     //メインスキル用のクローンを生成
     mainSkillsClone = mainSkills.slice();
@@ -13,12 +13,51 @@ function requiredSkillChose(requiredSkillSum,matteranLevel){
         var requiredSkill = mainSkillsClone[skillIndex];
         mainSkillsClone.splice(skillIndex, 1);
 
+        //見える確率
+        var readRange;
+        //メイン
+        var readMainFlag = 0;
+
+        //必須スキル情報
+        switch(level){
+            case 0:
+                readRange = 100;
+                break;
+            case 1:
+                readRange = 80 + level;
+                break;
+            case 2:
+                readRange = 70 + level;
+                break;
+            case 3:
+                readRange = 70 + level / 2;
+                break;
+            case 4:
+                readRange = 60 + level / 3;
+                break;
+        }
+        if(Math.floor(Math.random() * 100) + 1 <= readRange){
+            readMainFlag = 1;
+        }else{
+            rand = Math.floor(Math.random() * 3);
+            switch(rand){
+                case 0:
+                    readMainFlag = 0;
+                    break;
+                case 1:
+                    readMainFlag = -1;
+                    break;
+                case 2:
+                    readMainFlag = -2;
+                    break;
+            }
+        }
         //返り値用の配列にプッシュする
-        requiredSkills.push([requiredSkill,matteranLevel*2]);
+        requiredSkills.push([requiredSkill,matteranLevel*2,readMainFlag]);
     }
     return requiredSkills;
 }
-function likeSkillChose(likeSkillSum,matteranLevel){
+function likeSkillChose(likeSkillSum,matteranLevel,level){
 
     //メインスキル用のクローンを生成
     subSkillsClone = subSkills.slice();
@@ -33,8 +72,47 @@ function likeSkillChose(likeSkillSum,matteranLevel){
         var likeSkill = subSkillsClone[skillIndex];
         subSkillsClone.splice(likeSkill, 1);
 
+        //内容が見えるか見えないかを判定
+        var readRange;
+        //サブ
+        var readSubFlag = 0;
+        //尚可スキル情報
+        switch(level){
+            case 0:
+                readRange = 100;
+                break;
+            case 1:
+                readRange = 50 + level;
+                break;
+            case 2:
+                readRange = 50 + level;
+                break;
+            case 3:
+                readRange = 50 + level / 2;
+                break;
+            case 4:
+                readRange = 40 + level / 3;
+                break;
+        }
+        if(Math.floor(Math.random() * 100) + 1 <= readRange){
+            readSubFlag = 1;
+        }else{
+            rand = Math.floor(Math.random() * 3);
+            switch(rand){
+                case 0:
+                    readSubFlag = 0;
+                    break;
+                case 1:
+                    readSubFlag = -1;
+                    break;
+                case 2:
+                    readSubFlag = -2;
+                    break;
+            }
+        }
+
         //返り値用の配列にプッシュする
-        likeSkills.push([likeSkill,matteranLevel*1.5]);
+        likeSkills.push([likeSkill,Math.floor(matteranLevel*1.5),readSubFlag]);
     }
     return likeSkills;
 }
@@ -131,72 +209,19 @@ function matteran(level){
     var matteranLevel = Math.floor(Math.random() * (maxMatteranLevel - minMatteranLevel) + minMatteranLevel);
     var matteranPrice = Math.floor(Math.random() * (maxMatteranPrice - minMatteranPrice) + minMatteranPrice);
 
+    //内容が記入されてるかされていないか
+
     //必須スキル確定
-    requiredSkills = requiredSkillChose(requiredSkillSum,matteranLevel);
+    requiredSkills = requiredSkillChose(requiredSkillSum,matteranLevel,level);
     //尚可スキル確定
-    likeSkills = likeSkillChose(likeSkillSum,matteranLevel);
+    likeSkills = likeSkillChose(likeSkillSum,matteranLevel,level);
     //雰囲気確定
     atmospheres = atmosphereChose(atmosphereSum);
-    
-    //内容が記入されてるかされていないか
-    
-    //メイン
-    var readMainFlag = 0;
-    //サブ
-    var readSubFlag = 0;
-    
-    //見える確率
-    var readRange;
-    
-    //必須スキル情報
-    switch(level){
-        case 0:
-            readRange = 100;
-            break;
-        case 1:
-            readRange = 80 + level;
-            break;
-        case 2:
-            readRange = 70 + level;
-            break;
-        case 3:
-            readRange = 70 + level / 2;
-            break;
-        case 4:
-            readRange = 60 + level / 3;
-            break;
-    }
-    if(Math.floor(Math.random() * 100) + 1 <= readRange){
-        readMainFlag = 1;
-    }
-    
-    //尚可スキル情報
-    switch(level){
-        case 0:
-            readRange = 100;
-            break;
-        case 1:
-            readRange = 50 + level;
-            break;
-        case 2:
-            readRange = 50 + level;
-            break;
-        case 3:
-            readRange = 50 + level / 2;
-            break;
-        case 4:
-            readRange = 40 + level / 3;
-            break;
-    }
-    if(Math.floor(Math.random() * 100) + 1 <= readRange){
-        readSubFlag = 1;
-    }
-    
-    
+
     //期間の決定
     var interval = Math.floor(Math.random() * (12 - 4) + 4);
-    
+
     //案件情報の挿入
-    matters.push([requiredSkills,likeSkills,atmospheres,matteranLevel,matteranPrice,interval,readMainFlag,readSubFlag]);
+    matters.push([requiredSkills,likeSkills,atmospheres,matteranLevel,matteranPrice,interval]);
     timeEnter(30);
 }

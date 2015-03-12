@@ -1,8 +1,10 @@
 function timeEnter(enterMinutes){
+    
     //長針のカウンタを更新し、針を動かす
-
+    minutes += enterMinutes / 5;
+    
     //カウンタが１週していたら0に戻して短針を動かす
-    for(minutes += enterMinutes / 5;minutes >= 12;minutes -= 12){
+    for(;minutes >= 12;minutes -= 12){
         hours++;
         if(hours == 12){
             hours = 0;
@@ -17,6 +19,12 @@ function timeEnter(enterMinutes){
             time.addChild(clock);
             time.addChild(short);
             time.addChild(long);
+            
+            //支出の計算
+            //維持費の減額
+            outMoney += 20;
+            //今日の成果を出す。
+            money = money + inMoney - outMoney;
             
             //週を進める
             weekEnd();

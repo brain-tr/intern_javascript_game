@@ -96,11 +96,11 @@ function personRemarkChose(sumRemark){
 
 function personInsert(level){
 
-    //人材IDの決定
+    //人材名の決定
     for(var count = 0 in persons){
         count++;
     }
-        var id = count + 10000;
+        var id = chance.name();
         //人材のレベルによって処理がわかれる
         switch(level){
         case 0:
@@ -137,7 +137,7 @@ function personInsert(level){
         break;
         case 4:
         var minSkill     = 7;
-        var maxSkill     = 25;
+        var maxSkill     = 20;
         var minSumLevel = 310;
         var maxSumLevel = 500;
         var minPrice    = 60;
@@ -157,54 +157,6 @@ function personInsert(level){
     //人材の作成
     persons.push([id,personSkills,price,personRemarks]);
     
-    console.log(persons);
     //時間を進める
     timeEnter(30);
 }
-/*
-function personSkillChose(skillCount,sumLevel){
-    //スキル数と合計レベルを元に各スキルのレベルを決める
-    //スキル抜き出し用のクローン
-    var skillsClone = skills.slice();
-    //返り値
-    var personSkills = Array();
-
-    var type = 1;
-    if(type == 0){
-        //特出型
-    }else if(type == 1){
-        //バランス型
-        var average = Math.floor(sumLevel / skillCount);
-
-        //スキルの数から先に入れたスキル１つ引いた数だけループする
-        for(var i = 0; i < skillCount - 1; i++){
-
-            //スキルをランダムで決定する
-            var skillIndex = Math.floor(Math.random()*skillsClone.length);
-            //クローンから配列の要素を抜きだす
-            var personSkill = skillsClone[skillIndex];
-            skillsClone.splice(skillIndex, 1);
-
-            //返り値用の配列にプッシュする
-            personSkills.push([personSkill,average]);
-        }
-    }
-    return personSkills;
->>>>>>> 542b5ecf4c3760f7b2515a6aec27dcde3dbb2a69
-}
-
-<<<<<<< HEAD
-=======
-        //スキルをランダムで決定する
-        var remarkIndex = Math.floor(Math.random()*remarksClone.length);
-        //クローンから配列の要素を抜きだす
-        var personRemark = remarksClone[remarkIndex];
-        remarksClone.splice(remarkIndex, 1);
-
-        //返り値用の配列にプッシュする
-        personRemarks.push([personRemark]);
-    }
-    return personRemarks;
-}
->>>>>>> 542b5ecf4c3760f7b2515a6aec27dcde3dbb2a69
-*/

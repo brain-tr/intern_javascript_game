@@ -48,9 +48,6 @@ function createIcon(){
 
                 //左上のボードの更新を行う
                 loadBoard();
-
-                //時間を進める
-                timeEnter(30);
             });
         }else{
             //レベルを抽選
@@ -85,9 +82,6 @@ function createIcon(){
 
                 //左上のボードの更新を行う
                 loadBoard();
-
-                //時間を進める
-                timeEnter(30);
             });
         }
 
