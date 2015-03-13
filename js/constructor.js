@@ -13,6 +13,7 @@ function constructor(){
     createFlag = true;  //アイコン発生フラグ
     personPointer = 0;  //マッチング時のポインタ（人材）
     matterPointer = 0;  //マッチング時のポインタ（案件）
+    matchings = [];     //マッチング確定後の案件と人材を入れる用
     
     //収入
     inMoney = 0;

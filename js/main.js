@@ -22,7 +22,11 @@ window.onload = function() {
         './img/button/button2.png',
         './img/button/button3.png',
         './img/button/button4.png',
-        './img/button/matching_button.gif'
+        './img/button/matching_button.gif',
+        './img/bar.png',
+        './img/clock.png',
+        './img/button/follow.gif',
+        './img/button/push.gif'
     );
     game.onload = function() {
         //タイトルシーンの作成

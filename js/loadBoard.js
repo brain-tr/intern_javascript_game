@@ -40,15 +40,13 @@ function CreateMatchingBoard(){
     //作成したレイヤーにイベントリスナーをつける
     createMatchButton.addEventListener(Event.TOUCH_START,function(e){
 
-        //発生判断フラグをTrueにする
-        createFlag = true;
-
         //人材と案件を減らす
         matter--;
         person--;
         loadBoard();
 
-        //指定した人材と案件を退避させる
+        //指定した人材と案件を配列に格納し退避させる
+        matchings.push([matters,persons]);
         matters.splice(matterPointer - 1, 1);
         persons.splice(personPointer - 1, 1);
 
@@ -58,11 +56,18 @@ function CreateMatchingBoard(){
             matchButton.removeEventListener;
         }
 
-        //ルートシーンへ戻る
-        game.popScene();
+        //マッチング画面へ移行する。
 
+        //マッチング用のシーンを呼び出す
+        game.replaceScene(interview()); 
+        //ルートシーンへ戻る
+        //game.popScene();
+        
+        //発生判断フラグをTrueにする
+        //createFlag = true;
+        
         //時計を進める
-        timeEnter(120);
+        //timeEnter(120);
     });
 
     return matchBoard;
@@ -338,10 +343,10 @@ function createPersonPageInfo(){
 }
 
 function createPersonBoardInner(num){
-    
+
     //添字の数に1足された数が入るので、マイナス1しておく
     num--;
-    
+
     //返り値のグループ
     personBoardInner = new Group();
     //タイトル
@@ -367,7 +372,7 @@ function createPersonBoardInner(num){
     personPrice.x = 285;
     personPrice.y = 50;
     personPrice.font = "18px 'メイリオ'";
-    
+
     personBoardInner.addChild(personNmaeTitle);
     personBoardInner.addChild(personNmae);
     personBoardInner.addChild(personPriceTitle);
@@ -414,3 +419,124 @@ function createPersonBoardInner(num){
     personBoardInner.addChild(personArea);
     return personBoardInner;
 }
+
+/****************************************************************
+以下面談画面用
+****************************************************************/
+
+//面談のシーンを作成
+var interview = function(){
+
+    var scene = new Scene();
+
+    //面談シーンのグループ
+    var interviewGroup = new Group();
+
+    //面談シーンの背景
+    var interviewBack = new Sprite(700,500);
+    interviewBack.backgroundColor = "#999";
+
+    var interviewDisplay = CreateInterviewDisplay();
+
+    //レイヤーを追加する
+    scene.addChild(interviewBack);
+    scene.addChild(interviewDisplay);
+
+    //シーンを返す
+    return scene;
+}
+
+function CreateInterviewDisplay(){
+    var interviewDisplay = new Group();
+
+    //残りターン数を表示
+
+    //採用バーを表示
+    var bar = new Bar();
+    bar.x = 150;
+    bar.y = 370;
+    var clock = new Sprite(50,50);
+    clock.image = game.assets['./img/clock.png'];
+    clock.x = 95;
+    clock.y = 360;
+
+    //営業コメント欄を表示
+
+    //人材コメント欄を表示
+
+    //制限時間バーを表示
+
+
+    //フォローボタンを表示
+    var follow = new Sprite(100,48);
+    follow.image = game.assets['./img/button/follow.gif'];
+    follow.x = 170;
+    follow.y = 430;
+    
+    //イベントリスナーをつけて成功か、失敗かを判定する。
+
+    //プッシュボタンを表示
+    var push = new Sprite(100,48);
+    push.image = game.assets['./img/button/push.gif'];
+    push.x = 430;
+    push.y = 430;
+    //イベントリスナーをつけて成功か、失敗かを判定する。
+
+    //残り回数を表示
+
+    
+    interviewDisplay.addChild(bar);
+    interviewDisplay.addChild(clock);
+    interviewDisplay.addChild(push);
+    interviewDisplay.addChild(follow);
+    
+    
+    return interviewDisplay;
+
+}
+
+/*
+ * バークラス
+ */
+var SCREEN_WIDTH = 500;		// 幅
+
+/*
+ * グローバル変数
+ */
+var nowTime;			// 現在時刻
+var startTime;			// スタート時刻
+// 定数
+var IMG_BAR = "./img/bar.png";
+var COUNTDOWN = 10;			// カウントダウン秒数
+
+var Bar = Class.create(Sprite, {
+	initialize: function(){
+		Sprite.call(this, 32, 32);
+		this.image = game.assets[IMG_BAR];
+		this.zobun = game.width / (COUNTDOWN*100);	// 増分幅の設定（100分の1秒用に10を掛けている）
+		this.timer = game.frame + this.zobun;
+		this.width = SCREEN_WIDTH;
+		this.update = this.countdown;
+	},
+	reset: function(){
+		this.timer = game.frame + this.zobun;
+		this.width = SCREEN_WIDTH;
+		this.update = this.countdown;
+	},
+	countdown: function(){
+		if(game.frame > this.timer){
+			this.width -= this.zobun * 3.5;
+			if(this.width < this.zobun) this.width = 1;
+			this.timer += this.zobun;
+		}
+		if(this.width <= 1){
+			this.update = this.stop;
+		}
+	},
+	stop: function(){
+        this.reset();
+	},
+	onenterframe: function(){
+		this.update();
+	},
+});

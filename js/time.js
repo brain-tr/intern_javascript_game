@@ -28,6 +28,8 @@ function timeEnter(enterMinutes){
             
             //週を進める
             weekEnd();
+            
+            break;
         }
     }
 

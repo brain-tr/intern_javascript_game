@@ -16,7 +16,7 @@ function weekEnd(){
     //４．（共通変数）稼働情報を元に収支計算と残稼働数を減らす
 
     //マッチング用のシーンを呼び出す
-    game.replaceScene(matchingScene());  
+    game.replaceScene(resultBoard());  
 
     //５．収支を表示する。
 
@@ -24,7 +24,7 @@ function weekEnd(){
 }
 
 //次週へsceneの生成
-var matchingScene = function(){
+var resultBoard = function(){
 
     var scene = new Scene();
     scene.backgroundColor = '#5f28cc';
