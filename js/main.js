@@ -26,6 +26,8 @@ window.onload = function() {
         './img/bar.png',
         './img/clock.png',
         './img/button/follow.gif',
+        './img/bar.gif',
+        './img/bar2.gif',
         './img/button/push.gif'
     );
     game.onload = function() {

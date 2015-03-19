@@ -60,14 +60,6 @@ function CreateMatchingBoard(){
 
         //マッチング用のシーンを呼び出す
         game.replaceScene(interview()); 
-        //ルートシーンへ戻る
-        //game.popScene();
-        
-        //発生判断フラグをTrueにする
-        //createFlag = true;
-        
-        //時計を進める
-        //timeEnter(120);
     });
 
     return matchBoard;
@@ -450,9 +442,25 @@ function CreateInterviewDisplay(){
     var interviewDisplay = new Group();
 
     //残りターン数を表示
+    restTurnNum = 10;
+    restTurn = new Label("残り"+restTurnNum+"ターン");
+    restTurn.x = 60;
+    restTurn.y = 10;
+    restTurn.font = "18px 'メイリオ'";
 
     //採用バーを表示
-    var bar = new Bar();
+    resultBar = new Sprite(580,24);
+    resultBar.image = game.assets['./img/bar.gif'];
+    resultBar.x = 60;
+    resultBar.y = 40;
+
+
+    //営業コメント欄を表示
+
+    //人材コメント欄を表示
+
+    //制限時間バーを表示
+    bar = new Bar();
     bar.x = 150;
     bar.y = 370;
     var clock = new Sprite(50,50);
@@ -460,20 +468,15 @@ function CreateInterviewDisplay(){
     clock.x = 95;
     clock.y = 360;
 
-    //営業コメント欄を表示
-
-    //人材コメント欄を表示
-
-    //制限時間バーを表示
-
-
     //フォローボタンを表示
     var follow = new Sprite(100,48);
     follow.image = game.assets['./img/button/follow.gif'];
     follow.x = 170;
     follow.y = 430;
-    
     //イベントリスナーをつけて成功か、失敗かを判定する。
+    follow.addEventListener(Event.TOUCH_START,function(e){
+        restNum = requirementCheck("follow",rest,restNum);
+    });
 
     //プッシュボタンを表示
     var push = new Sprite(100,48);
@@ -481,18 +484,103 @@ function CreateInterviewDisplay(){
     push.x = 430;
     push.y = 430;
     //イベントリスナーをつけて成功か、失敗かを判定する。
+    push.addEventListener(Event.TOUCH_START,function(e){
+        restNum = requirementCheck("push",rest,restNum);
+    });
 
     //残り回数を表示
+    var restNum = 3;
+    var rest = new Label("残り"+restNum+"回");
+    rest.x = 275;
+    rest.y = 430;
+    rest.font = "40px 'メイリオ'";
 
-    
+
+    interviewDisplay.addChild(restTurn);
+    interviewDisplay.addChild(resultBar);
     interviewDisplay.addChild(bar);
     interviewDisplay.addChild(clock);
     interviewDisplay.addChild(push);
     interviewDisplay.addChild(follow);
-    
-    
+    interviewDisplay.addChild(rest);
+
     return interviewDisplay;
 
+}
+
+//プッシュ・フォローの処理
+function requirementCheck(mode,rest,restNum){
+    //残り回数を確認して1以上残っていたら処理を行う
+    if(restNum > 0 || 1){
+        //残り回数を減算して返却する
+        restNum--;
+        rest.text = "残り"+ restNum +"回";
+
+        //ターンを初期化する。
+        restTurnNum--;
+        if(restTurnNum == 3){
+            resultBar.image = game.assets['./img/bar2.gif'];
+        }
+        restTurn.text = "残り"+restTurnNum+"ターン";
+        if(restTurnNum　<= 0){
+            //マッチング結果ボードを呼び出す。
+            game.pushScene(matchingResult());  
+        }
+        bar.reset();
+    }
+    return restNum;
+}
+
+//matchingの結果表示用ボード表示
+var matchingResult = function(){
+    var scene = new Scene();
+
+    //文字を表示する領域を作成0
+    var textBoard = new Sprite(500,270);
+    textBoard.backgroundColor = "red";
+    textBoard.x = 100;
+    textBoard.y = 85;
+    var matchingResultEnd = new Label("終了");
+    matchingResultEnd.font = "96px 'メイリオ'";
+    matchingResultEnd.x = 700;
+    matchingResultEnd.y = 155;
+    matchingResultEnd.tl.moveTo(270,155,10).moveTo(270,155,50).moveTo(-300,155,10);
+
+    if(Math.floor(Math.random() * 2) == 1){
+        var matchingResultText = new Label("採用");
+        matchingResultText.font = "96px 'メイリオ'";
+        matchingResultText.x = 700;
+        matchingResultText.y = 155;
+        matchingResultText.tl.moveTo(700,155,70).moveTo(270,155,10).moveTo(270,155,50);
+    }else{
+        var matchingResultText = new Label("不採用");
+        matchingResultText.font = "96px 'メイリオ'";
+        matchingResultText.x = 700;
+        matchingResultText.y = 155;
+        matchingResultText.tl.moveTo(700,155,70).moveTo(230,155,10).moveTo(230,155,50);
+    }
+    var matchingResultEndButton = new Sprite(200,60);
+    matchingResultEndButton.backgroundColor = "#00f";
+    matchingResultEndButton.x = 700;
+    matchingResultEndButton.y = 155;
+    matchingResultEndButton.tl.moveTo(700,155,110).moveTo(260,270,1);
+    matchingResultEndButton.addEventListener(Event.TOUCH_START,function(e){
+        //ルートシーンへ戻る
+        game.replaceScene(game.rootScene);
+
+        //発生判断フラグをTrueにする
+        createFlag = true;
+
+        //時計を進める
+        timeEnter(120);  
+    });
+
+    scene.addChild(textBoard);
+    scene.addChild(matchingResultEnd);
+    scene.addChild(matchingResultText);
+    scene.addChild(matchingResultEndButton);
+
+    return scene;
 }
 
 /*
@@ -510,33 +598,43 @@ var IMG_BAR = "./img/bar.png";
 var COUNTDOWN = 10;			// カウントダウン秒数
 
 var Bar = Class.create(Sprite, {
-	initialize: function(){
-		Sprite.call(this, 32, 32);
-		this.image = game.assets[IMG_BAR];
-		this.zobun = game.width / (COUNTDOWN*100);	// 増分幅の設定（100分の1秒用に10を掛けている）
-		this.timer = game.frame + this.zobun;
-		this.width = SCREEN_WIDTH;
-		this.update = this.countdown;
-	},
-	reset: function(){
-		this.timer = game.frame + this.zobun;
-		this.width = SCREEN_WIDTH;
-		this.update = this.countdown;
-	},
-	countdown: function(){
-		if(game.frame > this.timer){
-			this.width -= this.zobun * 3.5;
-			if(this.width < this.zobun) this.width = 1;
-			this.timer += this.zobun;
-		}
-		if(this.width <= 1){
-			this.update = this.stop;
-		}
-	},
-	stop: function(){
+    initialize: function(){
+        Sprite.call(this, 32, 32);
+        this.image = game.assets[IMG_BAR];
+        this.zobun = game.width / (COUNTDOWN*100);	// 増分幅の設定（100分の1秒用に10を掛けている）
+        this.timer = game.frame + this.zobun;
+        this.width = SCREEN_WIDTH;
+        this.update = this.countdown;
+    },
+    reset: function(){
+        this.timer = game.frame + this.zobun;
+        this.width = SCREEN_WIDTH;
+        this.update = this.countdown;
+    },
+    countdown: function(){
+        if(game.frame > this.timer){
+            this.width -= this.zobun * 3.5;
+            if(this.width < this.zobun) this.width = 1;
+            this.timer += this.zobun;
+        }
+        if(this.width <= 1){
+            this.update = this.stop;
+        }
+    },
+    stop: function(){
+        restTurnNum--;
+                if(restTurnNum == 3){
+            resultBar.image = game.assets['./img/bar2.gif'];
+        }
+        //残りターンが0を切ったらマッチングを終了
+        if(restTurnNum　<= 0){
+            //マッチング結果ボードを呼び出す。
+            game.pushScene(matchingResult());  
+        }
+        restTurn.text = "残り"+restTurnNum+"ターン";   
         this.reset();
-	},
-	onenterframe: function(){
-		this.update();
-	},
+    },
+    onenterframe: function(){
+        this.update();
+    },
 });
