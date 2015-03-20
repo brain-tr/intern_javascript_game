@@ -21,6 +21,16 @@ function timeEnter(enterMinutes){
             time.addChild(long);
             
             //支出の計算
+            for(var i = 0; i < matchings.length; i++){
+                //週の単価を足す
+                inMoney += matchings[i][1][4];
+                //残り期間を計算
+                matchings[i][1][5]--;
+                if(matchings[i][1][5] == 0){
+                    //期間満了になったら終了
+                    matchings.splice(i, 1);
+                }
+            }
             //維持費の減額
             outMoney += 20;
             //今日の成果を出す。

@@ -45,21 +45,21 @@ function CreateMatchingBoard(){
         person--;
         loadBoard();
 
-        //指定した人材と案件を配列に格納し退避させる
-        matchings.push([matters,persons]);
+
+        //マッチング画面へ移行する。
+
+        //マッチング用のシーンを呼び出す
+        game.replaceScene(interview(persons[personPointer-1],matters[matterPointer-1])); 
+
+        //指定した人材と案件を削除
         matters.splice(matterPointer - 1, 1);
         persons.splice(personPointer - 1, 1);
-
+  
         //人材と案件が最低一つなければボタンを押せないようにする
         if(matters.length == 0 || persons.length == 0){
             matchButton.image = game.assets['./img/match_no.png'];  // 画像を設定
             matchButton.removeEventListener;
         }
-
-        //マッチング画面へ移行する。
-
-        //マッチング用のシーンを呼び出す
-        game.replaceScene(interview()); 
     });
 
     return matchBoard;
@@ -390,7 +390,7 @@ function createPersonBoardInner(num){
             lSkillNameLabel.x = 5;
             lSkillNameLabel.font = "14px 'メイリオ'";
             lSkillLevelLabel.y = 105 + (i * 18);
-            lSkillLevelLabel.x = 100;
+            lSkillLevelLabel.x = 105;
             lSkillLevelLabel.font = "14px 'メイリオ'";
             personArea.addChild(lSkillNameLabel);
             personArea.addChild(lSkillLevelLabel);            
@@ -417,7 +417,10 @@ function createPersonBoardInner(num){
 ****************************************************************/
 
 //面談のシーンを作成
-var interview = function(){
+var interview = function(person,matter){
+
+    tempPerson = person;
+    tempMatter = matter;
 
     var scene = new Scene();
 
@@ -449,15 +452,38 @@ function CreateInterviewDisplay(){
     restTurn.font = "18px 'メイリオ'";
 
     //採用バーを表示
-    resultBar = new Sprite(580,24);
+    resultBar = new Sprite(584,28);
     resultBar.image = game.assets['./img/bar.gif'];
     resultBar.x = 60;
     resultBar.y = 40;
 
+    //人間を表示
+    human = new Sprite(130,200);
+    human.image = game.assets['./img/human.png'];
+    human.x = 285;
+    human.y = 120;
 
     //営業コメント欄を表示
+    eGroup = new Group();
+    eFukidashi = new Sprite(200,137);
+    eFukidashi.image = game.assets['./img/fukidashi.png'];
+    eFukidashi.x = 420;
+    eFukidashi.y = 75;
+    eComment = new Label(eCommentCreate());
+    eComment.font = "20px 'メイリオ'";
+    eComment.x = 435;
+    eComment.y = 90;
+    eGroup.addChild(eFukidashi);
+    eGroup.addChild(eComment);
 
     //人材コメント欄を表示
+    jGroup = new Group();
+    jFukidashi = new Sprite(200,137);
+    jFukidashi.image = game.assets['./img/fukidashi2.png'];
+    jFukidashi.x = 70;
+    jFukidashi.y = 170;
+    jComment = jCommentCreate();
+    jGroup.addChild(jFukidashi);
 
     //制限時間バーを表示
     bar = new Bar();
@@ -499,6 +525,9 @@ function CreateInterviewDisplay(){
     interviewDisplay.addChild(restTurn);
     interviewDisplay.addChild(resultBar);
     interviewDisplay.addChild(bar);
+    interviewDisplay.addChild(human);
+    interviewDisplay.addChild(eGroup);
+    interviewDisplay.addChild(jGroup);
     interviewDisplay.addChild(clock);
     interviewDisplay.addChild(push);
     interviewDisplay.addChild(follow);
@@ -516,16 +545,7 @@ function requirementCheck(mode,rest,restNum){
         restNum--;
         rest.text = "残り"+ restNum +"回";
 
-        //ターンを初期化する。
-        restTurnNum--;
-        if(restTurnNum == 3){
-            resultBar.image = game.assets['./img/bar2.gif'];
-        }
-        restTurn.text = "残り"+restTurnNum+"ターン";
-        if(restTurnNum　<= 0){
-            //マッチング結果ボードを呼び出す。
-            game.pushScene(matchingResult());  
-        }
+        reStart();
         bar.reset();
     }
     return restNum;
@@ -546,12 +566,13 @@ var matchingResult = function(){
     matchingResultEnd.y = 155;
     matchingResultEnd.tl.moveTo(270,155,10).moveTo(270,155,50).moveTo(-300,155,10);
 
-    if(Math.floor(Math.random() * 2) == 1){
+    if(Math.floor(Math.random() * 10) > 1){
         var matchingResultText = new Label("採用");
         matchingResultText.font = "96px 'メイリオ'";
         matchingResultText.x = 700;
         matchingResultText.y = 155;
         matchingResultText.tl.moveTo(700,155,70).moveTo(270,155,10).moveTo(270,155,50);
+        matchings.push([tempPerson,tempMatter]);
     }else{
         var matchingResultText = new Label("不採用");
         matchingResultText.font = "96px 'メイリオ'";
@@ -583,14 +604,37 @@ var matchingResult = function(){
     return scene;
 }
 
+/****************************************************************
+コメント生成用
+****************************************************************/
+
+function eCommentCreate(){
+    var Comment = "";
+    var mode = Math.floor(Math.random() * 3);
+    switch(mode){
+        case 0:
+            var rand = Math.floor((Math.random()*tempMatter[1].length));
+            Comment = tempMatter[1][rand][0] + "には<br>自信がありますか？";
+            break;
+        case 1:
+            var rand = Math.floor((Math.random()*tempMatter[0].length));
+            Comment = tempMatter[0][rand][0] + "には<br>自信がありますか？";
+            break;
+        case 2:
+            var rand = Math.floor((Math.random()*tempMatter[2].length));
+            Comment = tempMatter[2][rand];
+            break;
+    }
+    return Comment
+}
+function jCommentCreate(){
+}
+
+
 /*
  * バークラス
  */
 var SCREEN_WIDTH = 500;		// 幅
-
-/*
- * グローバル変数
- */
 var nowTime;			// 現在時刻
 var startTime;			// スタート時刻
 // 定数
@@ -622,19 +666,24 @@ var Bar = Class.create(Sprite, {
         }
     },
     stop: function(){
-        restTurnNum--;
-                if(restTurnNum == 3){
-            resultBar.image = game.assets['./img/bar2.gif'];
-        }
-        //残りターンが0を切ったらマッチングを終了
-        if(restTurnNum　<= 0){
-            //マッチング結果ボードを呼び出す。
-            game.pushScene(matchingResult());  
-        }
-        restTurn.text = "残り"+restTurnNum+"ターン";   
+        reStart();
         this.reset();
     },
     onenterframe: function(){
         this.update();
     },
 });
+
+function reStart(){
+    restTurnNum--;
+    if(restTurnNum == 3){
+        resultBar.image = game.assets['./img/bar2.gif'];
+    }
+    //残りターンが0を切ったらマッチングを終了
+    if(restTurnNum　<= 0){
+        //マッチング結果ボードを呼び出す。
+        game.pushScene(matchingResult());  
+    }
+    eComment.text = eCommentCreate();
+    restTurn.text = "残り"+restTurnNum+"ターン";
+}

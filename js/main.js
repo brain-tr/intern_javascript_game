@@ -28,7 +28,10 @@ window.onload = function() {
         './img/button/follow.gif',
         './img/bar.gif',
         './img/bar2.gif',
-        './img/button/push.gif'
+        './img/button/push.gif',
+        './img/human.png',
+        './img/fukidashi.png',
+        './img/fukidashi2.png'
     );
     game.onload = function() {
         //タイトルシーンの作成
