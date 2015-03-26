@@ -27,7 +27,9 @@ function weekEnd(){
 var resultBoard = function(){
 
     var scene = new Scene();
-    scene.backgroundColor = '#5f28cc';
+    var back = new Sprite(700,500);
+    back.image = game.assets['./img/resultBack.jpg'];
+    scene.addChild(back);
 
     var weekEndTitle = new Label("～業務終了～");
     weekEndTitle.textAlign = 'center';
@@ -63,24 +65,55 @@ var resultBoard = function(){
     moneyTitle.x = 50;
     moneyTitle.y = 330;
     moneyTitle.font = '40px sans-serif';
+    
+    //任期満了になった人材がいた場合、ここで表示する。
+    //現段階では8名以上出てきた場合崩れる可能性あり
+    if(endPerson.length > 0){
+        var PersonCount = 0;
+        for(var i = 0; i < endPerson.length; i++){
+            var endPersonText = new Label(endPerson[i]);
+            endPersonText.color = '#fff';
+            endPersonText.x = 420;
+            endPersonText.y = i * 40 + 130;
+            endPersonText.font = '28px sans-serif';
+            scene.addChild(endPersonText);
+            endPerson.splice(i, 1);
+            PersonCount++;
+        }
+        
+        var endPersonText1 = new Label("が任期満了となり");
+        endPersonText1.color = '#fff';
+        endPersonText1.x = 420;
+        endPersonText1.y = PersonCount * 40 + 130;
+        endPersonText1.font = '28px sans-serif';
+        scene.addChild(endPersonText1);
+        
+        var endPersonText2 = new Label("帰っていきました。");
+        endPersonText2.color = '#fff';
+        endPersonText2.x = 420;
+        endPersonText2.y = PersonCount * 40 + 170;
+        endPersonText2.font = '28px sans-serif';
+        
+        scene.addChild(endPersonText2);
+    }
 
     //支出表示
     var inMoneyLabel = new Label(String(inMoney));
-    inMoneyLabel.textAlign = 'center';
+    inMoneyLabel.textAlign = 'right';
     inMoneyLabel.color = '#fff';
-    inMoneyLabel.x = 250;
+    inMoneyLabel.x = 80;
     inMoneyLabel.y = 130;
     inMoneyLabel.font = '40px sans-serif';
     var outMoneyLabel = new Label(String(outMoney));
-    outMoneyLabel.textAlign = 'center';
+    outMoneyLabel.textAlign = 'right';
     outMoneyLabel.color = '#fff';
-    outMoneyLabel.x = 250;
+    outMoneyLabel.x = 80;
     outMoneyLabel.y = 230;
     outMoneyLabel.font = '40px sans-serif';
     var moneyLabel = new Label(String(money));
-    moneyLabel.textAlign = 'center';
+    moneyLabel.textAlign = 'right';
     moneyLabel.color = '#fff';
-    moneyLabel.x = 250;
+    moneyLabel.x = 80;
     moneyLabel.y = 330;
     moneyLabel.font = '40px sans-serif';
 

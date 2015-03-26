@@ -11,7 +11,7 @@ function CreateMatchingBoard(){
 
     //背景
     var matchBack = new Sprite(700,500);
-    matchBack.backgroundColor = 'rgba(34, 219, 91, 0.99)';
+    matchBack.image = game.assets['./img/board.jpg'];
 
     //案件表示用ボード
     var matterBoard = createMatterBoard();
@@ -20,10 +20,10 @@ function CreateMatchingBoard(){
     var personBoard = createPersonBoard();
 
     //ボタン
-    var createMatchButton = new Sprite(350,40);
-    createMatchButton.x = 175;
+    var createMatchButton = new Sprite(200,40);
+    createMatchButton.x = 250;
     createMatchButton.y = 455;
-    createMatchButton.image = game.assets['./img/button/matching_button.gif'];
+    createMatchButton.image = game.assets['./img/button/matching_button.png'];
 
     //背景を追加
     matchBoard.addChild(matchBack);
@@ -76,8 +76,7 @@ function createMatterBoard(){
     var matterBoard = new Group();
 
     var matterBoardBack = new Sprite(330,440);
-    matterBoardBack.backgroundColor = 'rgba(34, 219, 212, 0.99)';
-
+    matterBoardBack.image = game.assets['./img/paper.jpg'];
     var pageInfo = createMatterPageInfo();
 
     matterBoard.addChild(matterBoardBack);
@@ -273,7 +272,7 @@ function createPersonBoard(){
     var personBoard = new Group();
 
     var personBoardBack = new Sprite(330,440);
-    personBoardBack.backgroundColor = 'rgba(34, 219, 212, 0.99)';
+    personBoardBack.image = game.assets['./img/paper.jpg'];
 
     var pageInfo = createPersonPageInfo();
 
@@ -412,278 +411,3 @@ function createPersonBoardInner(num){
     return personBoardInner;
 }
 
-/****************************************************************
-以下面談画面用
-****************************************************************/
-
-//面談のシーンを作成
-var interview = function(person,matter){
-
-    tempPerson = person;
-    tempMatter = matter;
-
-    var scene = new Scene();
-
-    //面談シーンのグループ
-    var interviewGroup = new Group();
-
-    //面談シーンの背景
-    var interviewBack = new Sprite(700,500);
-    interviewBack.backgroundColor = "#999";
-
-    var interviewDisplay = CreateInterviewDisplay();
-
-    //レイヤーを追加する
-    scene.addChild(interviewBack);
-    scene.addChild(interviewDisplay);
-
-    //シーンを返す
-    return scene;
-}
-
-function CreateInterviewDisplay(){
-    var interviewDisplay = new Group();
-
-    //残りターン数を表示
-    restTurnNum = 10;
-    restTurn = new Label("残り"+restTurnNum+"ターン");
-    restTurn.x = 60;
-    restTurn.y = 10;
-    restTurn.font = "18px 'メイリオ'";
-
-    //採用バーを表示
-    resultBar = new Sprite(584,28);
-    resultBar.image = game.assets['./img/bar.gif'];
-    resultBar.x = 60;
-    resultBar.y = 40;
-
-    //人間を表示
-    human = new Sprite(130,200);
-    human.image = game.assets['./img/human.png'];
-    human.x = 285;
-    human.y = 120;
-
-    //営業コメント欄を表示
-    eGroup = new Group();
-    eFukidashi = new Sprite(200,137);
-    eFukidashi.image = game.assets['./img/fukidashi.png'];
-    eFukidashi.x = 420;
-    eFukidashi.y = 75;
-    eComment = new Label(eCommentCreate());
-    eComment.font = "20px 'メイリオ'";
-    eComment.x = 435;
-    eComment.y = 90;
-    eGroup.addChild(eFukidashi);
-    eGroup.addChild(eComment);
-
-    //人材コメント欄を表示
-    jGroup = new Group();
-    jFukidashi = new Sprite(200,137);
-    jFukidashi.image = game.assets['./img/fukidashi2.png'];
-    jFukidashi.x = 70;
-    jFukidashi.y = 170;
-    jComment = jCommentCreate();
-    jGroup.addChild(jFukidashi);
-
-    //制限時間バーを表示
-    bar = new Bar();
-    bar.x = 150;
-    bar.y = 370;
-    var clock = new Sprite(50,50);
-    clock.image = game.assets['./img/clock.png'];
-    clock.x = 95;
-    clock.y = 360;
-
-    //フォローボタンを表示
-    var follow = new Sprite(100,48);
-    follow.image = game.assets['./img/button/follow.gif'];
-    follow.x = 170;
-    follow.y = 430;
-    //イベントリスナーをつけて成功か、失敗かを判定する。
-    follow.addEventListener(Event.TOUCH_START,function(e){
-        restNum = requirementCheck("follow",rest,restNum);
-    });
-
-    //プッシュボタンを表示
-    var push = new Sprite(100,48);
-    push.image = game.assets['./img/button/push.gif'];
-    push.x = 430;
-    push.y = 430;
-    //イベントリスナーをつけて成功か、失敗かを判定する。
-    push.addEventListener(Event.TOUCH_START,function(e){
-        restNum = requirementCheck("push",rest,restNum);
-    });
-
-    //残り回数を表示
-    var restNum = 3;
-    var rest = new Label("残り"+restNum+"回");
-    rest.x = 275;
-    rest.y = 430;
-    rest.font = "40px 'メイリオ'";
-
-
-    interviewDisplay.addChild(restTurn);
-    interviewDisplay.addChild(resultBar);
-    interviewDisplay.addChild(bar);
-    interviewDisplay.addChild(human);
-    interviewDisplay.addChild(eGroup);
-    interviewDisplay.addChild(jGroup);
-    interviewDisplay.addChild(clock);
-    interviewDisplay.addChild(push);
-    interviewDisplay.addChild(follow);
-    interviewDisplay.addChild(rest);
-
-    return interviewDisplay;
-
-}
-
-//プッシュ・フォローの処理
-function requirementCheck(mode,rest,restNum){
-    //残り回数を確認して1以上残っていたら処理を行う
-    if(restNum > 0 || 1){
-        //残り回数を減算して返却する
-        restNum--;
-        rest.text = "残り"+ restNum +"回";
-
-        reStart();
-        bar.reset();
-    }
-    return restNum;
-}
-
-//matchingの結果表示用ボード表示
-var matchingResult = function(){
-    var scene = new Scene();
-
-    //文字を表示する領域を作成0
-    var textBoard = new Sprite(500,270);
-    textBoard.backgroundColor = "red";
-    textBoard.x = 100;
-    textBoard.y = 85;
-    var matchingResultEnd = new Label("終了");
-    matchingResultEnd.font = "96px 'メイリオ'";
-    matchingResultEnd.x = 700;
-    matchingResultEnd.y = 155;
-    matchingResultEnd.tl.moveTo(270,155,10).moveTo(270,155,50).moveTo(-300,155,10);
-
-    if(Math.floor(Math.random() * 10) > 1){
-        var matchingResultText = new Label("採用");
-        matchingResultText.font = "96px 'メイリオ'";
-        matchingResultText.x = 700;
-        matchingResultText.y = 155;
-        matchingResultText.tl.moveTo(700,155,70).moveTo(270,155,10).moveTo(270,155,50);
-        matchings.push([tempPerson,tempMatter]);
-    }else{
-        var matchingResultText = new Label("不採用");
-        matchingResultText.font = "96px 'メイリオ'";
-        matchingResultText.x = 700;
-        matchingResultText.y = 155;
-        matchingResultText.tl.moveTo(700,155,70).moveTo(230,155,10).moveTo(230,155,50);
-    }
-    var matchingResultEndButton = new Sprite(200,60);
-    matchingResultEndButton.backgroundColor = "#00f";
-    matchingResultEndButton.x = 700;
-    matchingResultEndButton.y = 155;
-    matchingResultEndButton.tl.moveTo(700,155,110).moveTo(260,270,1);
-    matchingResultEndButton.addEventListener(Event.TOUCH_START,function(e){
-        //ルートシーンへ戻る
-        game.replaceScene(game.rootScene);
-
-        //発生判断フラグをTrueにする
-        createFlag = true;
-
-        //時計を進める
-        timeEnter(120);  
-    });
-
-    scene.addChild(textBoard);
-    scene.addChild(matchingResultEnd);
-    scene.addChild(matchingResultText);
-    scene.addChild(matchingResultEndButton);
-
-    return scene;
-}
-
-/****************************************************************
-コメント生成用
-****************************************************************/
-
-function eCommentCreate(){
-    var Comment = "";
-    var mode = Math.floor(Math.random() * 3);
-    switch(mode){
-        case 0:
-            var rand = Math.floor((Math.random()*tempMatter[1].length));
-            Comment = tempMatter[1][rand][0] + "には<br>自信がありますか？";
-            break;
-        case 1:
-            var rand = Math.floor((Math.random()*tempMatter[0].length));
-            Comment = tempMatter[0][rand][0] + "には<br>自信がありますか？";
-            break;
-        case 2:
-            var rand = Math.floor((Math.random()*tempMatter[2].length));
-            Comment = tempMatter[2][rand];
-            break;
-    }
-    return Comment
-}
-function jCommentCreate(){
-}
-
-
-/*
- * バークラス
- */
-var SCREEN_WIDTH = 500;		// 幅
-var nowTime;			// 現在時刻
-var startTime;			// スタート時刻
-// 定数
-var IMG_BAR = "./img/bar.png";
-var COUNTDOWN = 10;			// カウントダウン秒数
-
-var Bar = Class.create(Sprite, {
-    initialize: function(){
-        Sprite.call(this, 32, 32);
-        this.image = game.assets[IMG_BAR];
-        this.zobun = game.width / (COUNTDOWN*100);	// 増分幅の設定（100分の1秒用に10を掛けている）
-        this.timer = game.frame + this.zobun;
-        this.width = SCREEN_WIDTH;
-        this.update = this.countdown;
-    },
-    reset: function(){
-        this.timer = game.frame + this.zobun;
-        this.width = SCREEN_WIDTH;
-        this.update = this.countdown;
-    },
-    countdown: function(){
-        if(game.frame > this.timer){
-            this.width -= this.zobun * 3.5;
-            if(this.width < this.zobun) this.width = 1;
-            this.timer += this.zobun;
-        }
-        if(this.width <= 1){
-            this.update = this.stop;
-        }
-    },
-    stop: function(){
-        reStart();
-        this.reset();
-    },
-    onenterframe: function(){
-        this.update();
-    },
-});
-
-function reStart(){
-    restTurnNum--;
-    if(restTurnNum == 3){
-        resultBar.image = game.assets['./img/bar2.gif'];
-    }
-    //残りターンが0を切ったらマッチングを終了
-    if(restTurnNum　<= 0){
-        //マッチング結果ボードを呼び出す。
-        game.pushScene(matchingResult());  
-    }
-    eComment.text = eCommentCreate();
-    restTurn.text = "残り"+restTurnNum+"ターン";
-}

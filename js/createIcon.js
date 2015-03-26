@@ -16,7 +16,7 @@ function createIcon(){
             //どの案件かを抽選
             matterNum = Math.floor(Math.random()*mainSkills.length);
             //表示する文字
-            var label = new Label(mainSkills[matterNum]);
+            var label = new Label("案件");
             label.x = 20;
             label.y = 15;
 

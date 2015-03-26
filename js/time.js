@@ -27,6 +27,8 @@ function timeEnter(enterMinutes){
                 //残り期間を計算
                 matchings[i][1][5]--;
                 if(matchings[i][1][5] == 0){
+                    //任期満了になった人材名を変数に格納
+                    endPerson.push(matchings[i][0][0]);
                     //期間満了になったら終了
                     matchings.splice(i, 1);
                 }

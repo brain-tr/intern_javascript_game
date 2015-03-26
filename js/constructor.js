@@ -93,4 +93,13 @@ function constructor(){
     times = [270,300,330,360,30,60,90,120,150,180,210,240];
     //プレイ日時
     date = 2;
+    
+    //任期満了者を格納する変数
+    endPerson = [];
+    
+    /*マッチング時に増減する値*/
+    GAUGE_BONUS = 30;
+    GAUGE_LOW = 30;
+    GAUGE_MEDIUM = 150;
+    GAUGE_HIGH = 300;
 }
