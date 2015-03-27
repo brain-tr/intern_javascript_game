@@ -48,6 +48,13 @@ function reStart(){
         resultBar.image = game.assets['./img/bar2.gif'];
         resultGauge.image = game.assets['./img/bar2.gif'];
     }
+    
+    if(restNum > 0){
+        push.image = game.assets['./img/button/push.gif'];
+        follow.image = game.assets['./img/button/follow.gif'];
+        actionButtonFlag = 0;
+    }
+    
     //残りターンが0を切ったらマッチングを終了
     if(restTurnNum　<= 0){
         //マッチング結果ボードを呼び出す。

@@ -1,10 +1,16 @@
-function requiredSkillChose(requiredSkillSum,matteranLevel,level){
+function requiredSkillChose(requiredSkillSum,matteranLevel,level,matterNum){
 
     //メインスキル用のクローンを生成
     mainSkillsClone = mainSkills.slice();
 
     //返り値用の変数
     var requiredSkills = Array();
+    //クローンから配列の要素を抜きだす
+    var requiredSkill = mainSkillsClone[matterNum];
+    mainSkillsClone.splice(matterNum, 1);
+    
+    //確定メインスキルを選択する
+    requiredSkills.push([requiredSkill,matteranLevel*2,1]);
 
     for(var i = 0; i < requiredSkillSum; i++){
         //スキルをランダムで決定する
@@ -135,7 +141,7 @@ function atmosphereChose(atmosphereSum){
     return matteranRemarks;
 }
 
-function matteran(level){
+function matteran(level,matterNum){
 
     //案件の選定
 
@@ -212,7 +218,7 @@ function matteran(level){
     //内容が記入されてるかされていないか
 
     //必須スキル確定
-    requiredSkills = requiredSkillChose(requiredSkillSum,matteranLevel,level);
+    requiredSkills = requiredSkillChose(requiredSkillSum,matteranLevel,level,matterNum);
     //尚可スキル確定
     likeSkills = likeSkillChose(likeSkillSum,matteranLevel,level);
     //雰囲気確定

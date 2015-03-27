@@ -61,6 +61,57 @@ function CreateInterviewDisplay(){
     resultGauge.y = 40;
     resultGauge.width = 0;
 
+
+    //制限時間バーを表示
+    bar = new Bar();
+    bar.x = 150;
+    bar.y = 370;
+    var clock = new Sprite(50,50);
+    clock.image = game.assets['./img/clock.png'];
+    clock.x = 95;
+    clock.y = 360;
+
+    //フォローボタンを表示
+    follow = new Sprite(100,48);
+    follow.image = game.assets['./img/button/follow.gif'];
+    follow.x = 170;
+    follow.y = 440;
+    //イベントリスナーをつけて成功か、失敗かを判定する。
+    follow.addEventListener(Event.TOUCH_START,function(e){
+        restNum = requirementCheck("follow");
+    });
+
+    //プッシュボタンを表示
+    push = new Sprite(100,48);
+    push.image = game.assets['./img/button/push.gif'];
+    push.x = 430;
+    push.y = 440;
+    //イベントリスナーをつけて成功か、失敗かを判定する。
+    push.addEventListener(Event.TOUCH_START,function(e){
+        restNum = requirementCheck("push");
+    });
+    
+    //フォロー、プッシュの2度押しの防止フラグ
+    actionButtonFlag = 0;
+    
+    //スルーボタンを
+    var through = new Sprite(100,48);
+    through.image = game.assets['./img/button/through.gif'];
+    through.x = 300;
+    through.y = 440;
+    //イベントリスナーをつけて成功か、失敗かを判定する。
+    through.addEventListener(Event.TOUCH_START,function(e){
+        reStart();
+        bar.reset();
+    });
+    
+    //残り回数を表示
+    restNum = 3;
+    rest = new Label("残り"+restNum+"回");
+    rest.x = 310;
+    rest.y = 410;
+    rest.font = "20px 'メイリオ'";
+
     //営業コメント欄を表示
     eGroup = new Group();
     eFukidashi = new Sprite(700,120);
@@ -71,8 +122,14 @@ function CreateInterviewDisplay(){
     eComment.color = "#fff";
     eComment.x = 30;
     eComment.y = 90;
+    eName = new Label("クライアント");
+    eName.font = "14px 'メイリオ'";
+    eName.color ="#fff";
+    eName.x = 560;
+    eName.y = 160;
     eGroup.addChild(eFukidashi);
     eGroup.addChild(eComment);
+    eGroup.addChild(eName);
 
     //人材コメント欄を表示
     jGroup = new Group();
@@ -93,43 +150,6 @@ function CreateInterviewDisplay(){
     jGroup.addChild(jComment);
     jGroup.addChild(jName);
 
-    //制限時間バーを表示
-    bar = new Bar();
-    bar.x = 150;
-    bar.y = 370;
-    var clock = new Sprite(50,50);
-    clock.image = game.assets['./img/clock.png'];
-    clock.x = 95;
-    clock.y = 360;
-
-    //フォローボタンを表示
-    var follow = new Sprite(100,48);
-    follow.image = game.assets['./img/button/follow.gif'];
-    follow.x = 170;
-    follow.y = 430;
-    //イベントリスナーをつけて成功か、失敗かを判定する。
-    follow.addEventListener(Event.TOUCH_START,function(e){
-        restNum = requirementCheck("follow",rest,restNum);
-    });
-
-    //プッシュボタンを表示
-    var push = new Sprite(100,48);
-    push.image = game.assets['./img/button/push.gif'];
-    push.x = 430;
-    push.y = 430;
-    //イベントリスナーをつけて成功か、失敗かを判定する。
-    push.addEventListener(Event.TOUCH_START,function(e){
-        restNum = requirementCheck("push",rest,restNum);
-    });
-
-    //残り回数を表示
-    var restNum = 3;
-    var rest = new Label("残り"+restNum+"回");
-    rest.x = 275;
-    rest.y = 430;
-    rest.font = "40px 'メイリオ'";
-
-
     interviewDisplay.addChild(interviewHead);
     interviewDisplay.addChild(restTurn);
     interviewDisplay.addChild(resultBar);
@@ -141,6 +161,7 @@ function CreateInterviewDisplay(){
     interviewDisplay.addChild(clock);
     interviewDisplay.addChild(push);
     interviewDisplay.addChild(follow);
+    interviewDisplay.addChild(through);
     interviewDisplay.addChild(rest);
 
     return interviewDisplay;
@@ -148,16 +169,82 @@ function CreateInterviewDisplay(){
 }
 
 //プッシュ・フォローの処理
-function requirementCheck(mode,rest,restNum){
-    //残り回数を確認して1以上残っていたら処理を行う
-    if(restNum > 0 || 1){
-        //残り回数を減算して返却する
-        restNum--;
-        rest.text = "残り"+ restNum +"回";
+function requirementCheck(mode){
+    //残り回数を確認して1以上残ってるなおかつまだ押されていなかったら処理を行う
+    if(restNum > 0 && actionButtonFlag == 0){
+    
+        switch(mode){
+            //聞かれたことを押し出した場合
+            case 'push':
+                switch(skillCheckResult){
+                    //全く満たしていない場合
+                    case 0:
+                        jComment.text = "だからできないって言ってるじゃないですか！！";
+                        if(resultGauge.width - GAUGE_LOW < 0){
+                            resultGauge.width = 0
+                        }else{
+                            resultGauge.width -= GAUGE_LOW;
+                        }
+                        break;
+                    //若干満たしている場合
+                     case 1:   
+                        jComment.text = "自信がもてるように頑張ってみますね…"
+                        if(resultGauge.width + GAUGE_MEDIUM >= 584){
+                            resultGauge.width = 584;
+                        }else{
+                            resultGauge.width += GAUGE_MEDIUM;
+                        }
+                        break;
+                    //満たしていた場合
+                     case 10:
+                        jComment.text = "しっかり頑張りますからね！！";
+                        if(resultGauge.width + GAUGE_HIGH >= 584){
+                            resultGauge.width = 584;
+                        }else{
+                            resultGauge.width += GAUGE_HIGH;
+                        }
+                        break;
+                    }
+                    break;
+            //聞かれたことをフォローした場合
+            case 'follow':
+                switch(skillCheckResult){
+                    case 0:
+                        jComment.text = "本当ですか？それじゃあ頑張ってみますけど。";
+                        if(resultGauge.width + GAUGE_LOW > 584){
+                            resultGauge.width = 584
+                        }else{
+                            resultGauge.width += GAUGE_LOW;
+                        }
+                        break;
+                     case 1:   
+                        jComment.text = "いや…できないとは言ってないんですけどね？"
+                        if(resultGauge.width - GAUGE_MEDIUM  <= 0){
+                            resultGauge.width = 0;
+                        }else{
+                            resultGauge.width -= GAUGE_MEDIUM;
+                        }
+                        break;
+                     case 10:
+                        jComment.text = "できるって言ってるのに、なんなんですか？";
+                        if(resultGauge.width - GAUGE_HIGH  <= 0){
+                            resultGauge.width = 0;
+                        }else{
+                            resultGauge.width -= GAUGE_HIGH;
+                        }
+                        break;
+                    }
+                    break;
+            }
+            push.image = game.assets['./img/button/pushNg.png'];
+            follow.image = game.assets['./img/button/followNg.png'];
+            actionButtonFlag = 1;
 
-        reStart();
-        bar.reset();
-    }
+            //残り回数を減算して返却する
+            restNum--;
+            rest.text = "残り"+ restNum +"回";
+        }
+        
     return restNum;
 }
 
@@ -166,35 +253,36 @@ var matchingResult = function(){
     var scene = new Scene();
 
     //文字を表示する領域を作成0
-    var textBoard = new Sprite(500,270);
-    textBoard.backgroundColor = "red";
+    var textBoard = new Sprite(500,400);
+    textBoard.image = game.assets['./img/wood_kanban.png'];
     textBoard.x = 100;
-    textBoard.y = 85;
+    //textBoard.y = 85;
     var matchingResultEnd = new Label("終了");
     matchingResultEnd.font = "96px 'メイリオ'";
     matchingResultEnd.x = 700;
     matchingResultEnd.y = 155;
-    matchingResultEnd.tl.moveTo(270,155,10).moveTo(270,155,50).moveTo(-300,155,10);
+    matchingResultEnd.tl.moveTo(255,130,10).moveTo(255,130,50).moveTo(-300,130,10);
 
     if(resultGauge.width > 514){
         var matchingResultText = new Label("採用");
         matchingResultText.font = "96px 'メイリオ'";
         matchingResultText.x = 700;
         matchingResultText.y = 155;
-        matchingResultText.tl.moveTo(700,155,70).moveTo(270,155,10).moveTo(270,155,50);
+        matchingResultText.tl.moveTo(700,130,70).moveTo(255,130,10).moveTo(255,130,50);
         matchings.push([tempPerson,tempMatter]);
     }else{
         var matchingResultText = new Label("不採用");
         matchingResultText.font = "96px 'メイリオ'";
         matchingResultText.x = 700;
         matchingResultText.y = 155;
-        matchingResultText.tl.moveTo(700,155,70).moveTo(230,155,10).moveTo(230,155,50);
+        matchingResultText.tl.moveTo(700,130,70).moveTo(210,130,10).moveTo(210,130,50);
     }
-    var matchingResultEndButton = new Sprite(200,60);
-    matchingResultEndButton.backgroundColor = "#00f";
+    var matchingResultEndButton = new Sprite(200,75);
+    matchingResultEndButton.image = game.assets['./img/arrow.png'];
     matchingResultEndButton.x = 700;
-    matchingResultEndButton.y = 155;
-    matchingResultEndButton.tl.moveTo(700,155,110).moveTo(260,270,1);
+    matchingResultEndButton.y = 135;
+    matchingResultEndButton.scaleX = -1;
+    matchingResultEndButton.tl.moveTo(700,155,110).moveTo(250,250,1);
     matchingResultEndButton.addEventListener(Event.TOUCH_START,function(e){
         //ルートシーンへ戻る
         game.replaceScene(game.rootScene);
@@ -239,6 +327,9 @@ function eCommentCreate(){
         case 2:
             var rand = Math.floor((Math.random()*tempMatter[2].length));
             Comment = tempMatter[2][rand];
+            push.image = game.assets['./img/button/pushNg.png'];
+            follow.image = game.assets['./img/button/followNg.png'];
+            actionButtonFlag = 1;
             break;
     }
     return Comment;
@@ -255,7 +346,7 @@ function jCommentCreate(){
             skillCheckResult = personSkillCheck();
             switch(skillCheckResult){
                  case 0:
-                    Comment = "無理です";
+                    Comment = "100％無理です自信ありません";
                     if(resultGauge.width - GAUGE_LOW < 0){
                         resultGauge.width = 0
                     }else{
@@ -263,7 +354,7 @@ function jCommentCreate(){
                     }
                     break;
                  case 1:   
-                    Comment = "無理ってことは<br>ないんですけど…"
+                    Comment = "自信がないってことは<br>ないんですけど…"
                     if(resultGauge.width + GAUGE_MEDIUM >= 584){
                         resultGauge.width = 584;
                     }else{
@@ -271,7 +362,7 @@ function jCommentCreate(){
                     }
                     break;
                  case 10:
-                    Comment = "大丈夫です<br>できると思います。";
+                    Comment = "大丈夫です<br>それにはかなり自信があります。";
                     if(resultGauge.width + GAUGE_HIGH >= 584){
                         resultGauge.width = 584;
                     }else{

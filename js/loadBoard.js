@@ -24,6 +24,12 @@ function CreateMatchingBoard(){
     createMatchButton.x = 250;
     createMatchButton.y = 455;
     createMatchButton.image = game.assets['./img/button/matching_button.png'];
+    
+    //ボタン
+    var cancelButton = new Sprite(200,40);
+    cancelButton.x = 40;
+    cancelButton.y = 455;
+    cancelButton.image = game.assets['./img/button/matching_button_cancel.png'];
 
     //背景を追加
     matchBoard.addChild(matchBack);
@@ -36,6 +42,7 @@ function CreateMatchingBoard(){
 
     //ボタンを追加
     matchBoard.addChild(createMatchButton);
+    matchBoard.addChild(cancelButton);
 
     //作成したレイヤーにイベントリスナーをつける
     createMatchButton.addEventListener(Event.TOUCH_START,function(e){
@@ -60,6 +67,14 @@ function CreateMatchingBoard(){
             matchButton.image = game.assets['./img/match_no.png'];  // 画像を設定
             matchButton.removeEventListener;
         }
+    });
+    
+    cancelButton.addEventListener(Event.TOUCH_START,function(e){
+        //ルートシーンへ戻る
+        game.replaceScene(game.rootScene);
+
+        //発生判断フラグをTrueにする
+        createFlag = true;
     });
 
     return matchBoard;

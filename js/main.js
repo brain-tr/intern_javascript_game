@@ -23,20 +23,27 @@ window.onload = function() {
         './img/button/button3.png',
         './img/button/button4.png',
         './img/button/matching_button.png',
+        './img/button/matching_button_cancel.png',
         './img/bar.png',
         './img/clock.png',
-        './img/button/follow.gif',
         './img/bar.gif',
         './img/bar2.gif',
         './img/bar3.png',
         './img/button/push.gif',
+        './img/button/follow.gif',
+        './img/button/pushNg.png',
+        './img/button/followNg.png',
+        './img/button/through.gif',
         './img/human.png',
+        './img/paper.png',
         './img/character.png',
         './img/character2.png',
         './img/paper.jpg',
         './img/resultBack.jpg',
         './img/board.jpg',
-        './img/kaigi.jpg'
+        './img/kaigi.jpg',
+        './img/wood_kanban.png',
+        './img/arrow.png'
     );
     game.onload = function() {
         //タイトルシーンの作成

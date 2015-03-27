@@ -7,18 +7,26 @@ function createIcon(){
         //アイコン表示用のグループ生成
         var icon = new Group();
         //アイコンの背景
-        var back = new Sprite(72, 48);
+        var back = new Sprite(72, 72);
 
         //１．１．案件か人材か抽選し更に難易度の抽選を行う
         // 0:案件 1:人材
         var choseFlag = Math.floor(Math.random()*2);
         if(choseFlag){
+            var iconPic = new Group();
             //どの案件かを抽選
-            matterNum = Math.floor(Math.random()*mainSkills.length);
-            //表示する文字
-            var label = new Label("案件");
-            label.x = 20;
-            label.y = 15;
+            var matterNum = Math.floor(Math.random()*mainSkills.length);
+            var iconLabel = new Label(mainSkills[matterNum]);
+            iconLabel.font = "16px 'cursive'";
+            iconLabel.y = 48;
+            
+            //画像を設定 
+            var iconPicBack = new Sprite(72,48);
+            iconPicBack.image = game.assets['./img/paper.png'];
+            
+            iconPic.addChild(iconPicBack);
+            iconPic.addChild(iconLabel);
+            
 
             //難易度を抽選
             var difficulty = Math.floor((Math.random()*5));
@@ -30,7 +38,7 @@ function createIcon(){
                 matter++;
 
                 //１．２．２. 案件追加メソッドの実行
-                matteran(difficulty);
+                matteran(difficulty,matterNum);
 
                 //１．２．３．アイコン削除
                 this.parentNode.removeChild( this );
@@ -53,9 +61,8 @@ function createIcon(){
             //レベルを抽選
             var difficulty = Math.floor((Math.random()*5));
             //表示する文字
-            var label = new Label("人材");
-            label.x = 20;
-            label.y = 15;
+            var iconPic = new Sprite(72,72);
+            iconPic.image = game.assets['./img/human.png'];
 
             //１．２．アイコンをクリックした時に呼び出す処理を設定する。
             icon.addEventListener(Event.TOUCH_START,function(e){
@@ -97,19 +104,19 @@ function createIcon(){
 
             }
         });
-        var x = Math.random()*(700-48);
-        var y = Math.random()*(300-48) + 170;
+        var x = Math.random()*(700-72);
+        var y = Math.random()*(300-72) + 170;
 
         //アイコンの移動方向決定
-        var moveX = Math.random()*(700-48) - x;
-        var moveY = Math.random()*(300-48) + 170 - y;
+        var moveX = Math.random()*(700-72) - x;
+        var moveY = Math.random()*(300-72) + 170 - y;
         icon.tl.moveBy(moveX, moveY, 30).moveBy(100, 0, 20).moveBy(-100, 30, 20).loop
 
         back.image = game.assets['./img/button/button'+ difficulty +'.png']; ;
 
         //グループにアイコンと背景を結合
         icon.addChild(back);
-        icon.addChild(label);
+        icon.addChild(iconPic);
 
         //どこに現れたのかを取得しどの範囲に描画するか指定する
         icon.moveTo(x,y);
