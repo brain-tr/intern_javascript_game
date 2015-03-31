@@ -23,6 +23,7 @@ window.onload = function() {
         './img/button/button3.png',
         './img/button/button4.png',
         './img/button/matching_button.png',
+        './img/button/matching_buttonNG.png',
         './img/button/matching_button_cancel.png',
         './img/bar.png',
         './img/clock.png',

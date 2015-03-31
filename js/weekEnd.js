@@ -7,7 +7,6 @@ function weekEnd(){
     if(week > 4){
         week = 1;
         month++;
-    }else{
     }
 
     //３．（共通変数）発生判断フラグをFalseにする。
@@ -59,7 +58,7 @@ var resultBoard = function(){
     outMoneyTitle.y = 230;
     outMoneyTitle.font = '40px sans-serif';
 
-    var moneyTitle = new Label("差額");
+    var moneyTitle = new Label("資産");
     moneyTitle.textAlign = 'center';
     moneyTitle.color = '#fff';
     moneyTitle.x = 50;
@@ -117,49 +116,66 @@ var resultBoard = function(){
     moneyLabel.y = 330;
     moneyLabel.font = '40px sans-serif';
 
+    
+    //ゲームが終了した場合、リザルト画面からゲーム終了画面に飛ぶ
+    if(end == 0){
+        var label = new Label('ランキング登録');
+        label.textAlign = 'center';
+        label.color = '#fff';
+        label.x = 190;
+        label.y = 430;
+        label.font = '40px sans-serif';
 
-    var label = new Label('次週へ');
-    label.textAlign = 'center';
-    label.color = '#fff';
-    label.x = 190;
-    label.y = 430;
-    label.font = '40px sans-serif';
+        //作成したレイヤーにイベントリスナーをつける
+        label.addEventListener(Event.TOUCH_START,function(e){
 
-    //作成したレイヤーにイベントリスナーをつける
-    label.addEventListener(Event.TOUCH_START,function(e){
+            //ランキング画面に移動
+            game.popScene();
+        });
+    }else{
+        var label = new Label('次週へ');
+        label.textAlign = 'center';
+        label.color = '#fff';
+        label.x = 190;
+        label.y = 430;
+        label.font = '40px sans-serif';
 
-        //６．次週へボタンを表示する。
-        //ボタン押下時処理
-        //６．１．（共通変数）月、週を変更する。
-        dateinfo.text = "日付: "+String(month)+"月"+String(week)+"週";
-        restinfo.text = "残り: "+String(end)+"週";
-        moneyinfo.text = "資金　:　"+String(money)+"万円";
-        
-        //支出をリセットする
-        inMoney = 0;
-        outMoney = 0;
-        
-        //アイコンをリセットする
-        //game.rootScene.removeChild(icon);
+        //作成したレイヤーにイベントリスナーをつける
+        label.addEventListener(Event.TOUCH_START,function(e){
 
-        //６．２．時間を１０：００に変更する。
-        hours = 10;
-        minutes = 0;
+            //６．次週へボタンを表示する。
+            //ボタン押下時処理
+            //６．１．（共通変数）月、週を変更する。
+            dateinfo.text = "日付: "+String(month)+"月"+String(week)+"週";
+            restinfo.text = "残り: "+String(end)+"週";
+            moneyinfo.text = "資金　:　"+String(money)+"万円";
 
-        //６．３．（共通変数）発生判断フラグをTrueにする。
-        createFlag = true;
+            //支出をリセットする
+            inMoney = 0;
+            outMoney = 0;
 
-        //６．４．時計の針を１０：００にする。
-        short.rotation = times[hours];
-        long.rotation = times[minutes];
-        time.addChild(dateinfo);
-        time.addChild(restinfo);
+            //アイコンをリセットする
+            //game.rootScene.removeChild(icon);
 
-        //６．５．業務報告ボードを消す
+            //６．２．時間を１０：００に変更する。
+            hours = 10;
+            minutes = 0;
 
-        //ルートシーンへ戻る
-        game.popScene();
-    });
+            //６．３．（共通変数）発生判断フラグをTrueにする。
+            createFlag = true;
+
+            //６．４．時計の針を１０：００にする。
+            short.rotation = times[hours];
+            long.rotation = times[minutes];
+            time.addChild(dateinfo);
+            time.addChild(restinfo);
+
+            //６．５．業務報告ボードを消す
+
+            //ルートシーンへ戻る
+            game.popScene();
+        });
+    }
 
     //レイヤーを追加する
     scene.addChild(label);

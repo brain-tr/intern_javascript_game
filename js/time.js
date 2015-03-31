@@ -23,7 +23,12 @@ function timeEnter(enterMinutes){
             //支出の計算
             for(var i = 0; i < matchings.length; i++){
                 //週の単価を足す
-                inMoney += matchings[i][1][4];
+                if(matchings[i][1][4] - matchings[i][0][2] < 0){
+                    var inMoneyTemp = 0;
+                }else{
+                    var inMoneyTemp = matchings[i][1][4] - matchings[i][0][2];
+                }
+                inMoney += inMoneyTemp;
                 //残り期間を計算
                 matchings[i][1][5]--;
                 if(matchings[i][1][5] == 0){

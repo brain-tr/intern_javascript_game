@@ -4,7 +4,7 @@ function constructor(){
     week = 1;           //週
     hours = 10;         //時間
     minutes = 0;        //分
-    end = 48;           //残り週
+    end = 3;           //残り週
     money = 100;        //資金
     matter = 0;         //案件数
     person = 0;         //人材数

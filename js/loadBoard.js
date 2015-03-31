@@ -20,10 +20,12 @@ function CreateMatchingBoard(){
     var personBoard = createPersonBoard();
 
     //ボタン
-    var createMatchButton = new Sprite(200,40);
+    createMatchButton = new Sprite(200,40);
     createMatchButton.x = 250;
     createMatchButton.y = 455;
     createMatchButton.image = game.assets['./img/button/matching_button.png'];
+    createMatchButton.machFlg = 0;
+    checkMatchOk();
     
     //ボタン
     var cancelButton = new Sprite(200,40);
@@ -46,26 +48,27 @@ function CreateMatchingBoard(){
 
     //作成したレイヤーにイベントリスナーをつける
     createMatchButton.addEventListener(Event.TOUCH_START,function(e){
+        if(createMatchButton.machFlg == 1){
+            //人材と案件を減らす
+            matter--;
+            person--;
+            loadBoard();
 
-        //人材と案件を減らす
-        matter--;
-        person--;
-        loadBoard();
 
+            //マッチング画面へ移行する。
 
-        //マッチング画面へ移行する。
+            //マッチング用のシーンを呼び出す
+            game.replaceScene(interview(persons[personPointer-1],matters[matterPointer-1])); 
 
-        //マッチング用のシーンを呼び出す
-        game.replaceScene(interview(persons[personPointer-1],matters[matterPointer-1])); 
+            //指定した人材と案件を削除
+            matters.splice(matterPointer - 1, 1);
+            persons.splice(personPointer - 1, 1);
 
-        //指定した人材と案件を削除
-        matters.splice(matterPointer - 1, 1);
-        persons.splice(personPointer - 1, 1);
-  
-        //人材と案件が最低一つなければボタンを押せないようにする
-        if(matters.length == 0 || persons.length == 0){
-            matchButton.image = game.assets['./img/match_no.png'];  // 画像を設定
-            matchButton.removeEventListener;
+            //人材と案件が最低一つなければボタンを押せないようにする
+            if(matters.length == 0 || persons.length == 0){
+                matchButton.image = game.assets['./img/match_no.png'];  // 画像を設定
+                matchButton.removeEventListener;
+            }
         }
     });
     
@@ -134,6 +137,7 @@ function createMatterPageInfo(){
         matterBoardInner = createMatterBoardInner(matterPointer);
         pageInfo.addChild(matterBoardInner);
         pageNum.text =  matterPointer + "/" + matters.length;
+        checkMatchOk();
     });
     rightArrow.addEventListener(Event.TOUCH_START,function(e){
         matterPointer++;
@@ -144,6 +148,7 @@ function createMatterPageInfo(){
         matterBoardInner = createMatterBoardInner(matterPointer);
         pageInfo.addChild(matterBoardInner);
         pageNum.text =  matterPointer + "/" + matters.length;
+        checkMatchOk();
     });
 
     //追加
@@ -328,6 +333,7 @@ function createPersonPageInfo(){
         personBoardInner = createPersonBoardInner(personPointer);
         pageInfo.addChild(personBoardInner);
         pageNum.text =  personPointer + "/" + persons.length;
+        checkMatchOk();
     });
     rightArrow.addEventListener(Event.TOUCH_START,function(e){
         personPointer++;
@@ -338,6 +344,7 @@ function createPersonPageInfo(){
         personBoardInner = createPersonBoardInner(personPointer);
         pageInfo.addChild(personBoardInner);
         pageNum.text =  personPointer + "/" + persons.length;
+        checkMatchOk();
     });
 
     //追加
@@ -424,5 +431,15 @@ function createPersonBoardInner(num){
     personBoardInner.addChild(title);
     personBoardInner.addChild(personArea);
     return personBoardInner;
+}
+
+function checkMatchOk(){
+    if(persons[personPointer - 1][2] > matters[matterPointer - 1][4]){
+        createMatchButton.image = game.assets['./img/button/matching_buttonNG.png'];
+        createMatchButton.machFlg = 0;
+    }else{
+        createMatchButton.image = game.assets['./img/button/matching_button.png'];
+        createMatchButton.machFlg = 1;
+    }
 }
 
