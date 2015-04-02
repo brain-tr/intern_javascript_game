@@ -128,9 +128,8 @@ var resultBoard = function(){
 
         //作成したレイヤーにイベントリスナーをつける
         label.addEventListener(Event.TOUCH_START,function(e){
-
             //ランキング画面に移動
-            game.popScene();
+            createRankingBoard(money);
         });
     }else{
         var label = new Label('次週へ');

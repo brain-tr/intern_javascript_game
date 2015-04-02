@@ -32,12 +32,23 @@ var createStartScene = function() {
     startImage.x = 150;                                     // 横位置調整
     startImage.y = 385;                                     // 縦位置調整
     scene.addChild(startImage);                             // シーンに追加
+    //ランキング画像設定
+    var rankingImage = new Sprite(100, 100);                  // スプライトを作る
+    rankingImage.image = game.assets['./img/rank.png'];      // スタート画像を設定
+    rankingImage.x = 575;                                     // 横位置調整
+    rankingImage.y = 385;                                     // 縦位置調整
+    scene.addChild(rankingImage);                             // シーンに追加
 
     // スタート画像にタッチイベントを設定
     startImage.addEventListener(Event.TOUCH_START, function(e) {
         constructor();
         startfnc();
         game.replaceScene(createGameScene());    // 現在表示しているシーンをゲームシーンに置き換える
+    });
+    
+    // ランキング画像にタッチイベントを設定
+    rankingImage.addEventListener(Event.TOUCH_START, function(e) {
+        createRankingBoard(0);
     });
     // タイトルシーンを返します。
     game.pushScene(scene);

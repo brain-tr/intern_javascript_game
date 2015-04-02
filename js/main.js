@@ -44,7 +44,16 @@ window.onload = function() {
         './img/board.jpg',
         './img/kaigi.jpg',
         './img/wood_kanban.png',
-        './img/arrow.png'
+        './img/arrow.png',
+        './img/rankingborad.jpg',
+        './img/rank.png',
+        './img/end.png',
+        './img/rank/rank1.png',
+        './img/rank/rank2.png',
+        './img/rank/rank3.png',
+        './img/rank/rank4.png',
+        './img/rank/rank5.png',
+        './img/button/tweet.gif'
     );
     game.onload = function() {
         //タイトルシーンの作成
