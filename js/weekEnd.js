@@ -1,4 +1,28 @@
 function weekEnd(){
+
+    //支出の計算
+    for(var i = 0; i < matchings.length; i++){
+        //週の単価を足す
+        if(matchings[i][1][4] - matchings[i][0][2] < 0){
+            var inMoneyTemp = 0;
+        }else{
+            var inMoneyTemp = matchings[i][1][4] - matchings[i][0][2];
+        }
+        inMoney += inMoneyTemp;
+        //残り期間を計算
+        matchings[i][1][5]--;
+        if(matchings[i][1][5] == 0){
+            //任期満了になった人材名を変数に格納
+            endPerson.push(matchings[i][0][0]);
+            //期間満了になったら終了
+            matchings.splice(i, 1);
+        }
+    }
+    
+    //維持費の減額
+    outMoney += 20;
+    //今日の成果を出す。
+    money = money + inMoney - outMoney;
     //１．週を追加し、残り週を減らす
     week++;
     end--;
@@ -14,7 +38,6 @@ function weekEnd(){
 
     //４．（共通変数）稼働情報を元に収支計算と残稼働数を減らす
 
-    //マッチング用のシーンを呼び出す
     game.replaceScene(resultBoard());  
 
     //５．収支を表示する。
@@ -64,7 +87,7 @@ var resultBoard = function(){
     moneyTitle.x = 50;
     moneyTitle.y = 330;
     moneyTitle.font = '40px sans-serif';
-    
+
     //任期満了になった人材がいた場合、ここで表示する。
     //現段階では8名以上出てきた場合崩れる可能性あり
     if(endPerson.length > 0){
@@ -79,20 +102,20 @@ var resultBoard = function(){
             endPerson.splice(i, 1);
             PersonCount++;
         }
-        
+
         var endPersonText1 = new Label("が任期満了となり");
         endPersonText1.color = '#fff';
         endPersonText1.x = 420;
         endPersonText1.y = PersonCount * 40 + 130;
         endPersonText1.font = '28px sans-serif';
         scene.addChild(endPersonText1);
-        
+
         var endPersonText2 = new Label("帰っていきました。");
         endPersonText2.color = '#fff';
         endPersonText2.x = 420;
         endPersonText2.y = PersonCount * 40 + 170;
         endPersonText2.font = '28px sans-serif';
-        
+
         scene.addChild(endPersonText2);
     }
 
@@ -116,7 +139,7 @@ var resultBoard = function(){
     moneyLabel.y = 330;
     moneyLabel.font = '40px sans-serif';
 
-    
+
     //ゲームが終了した場合、リザルト画面からゲーム終了画面に飛ぶ
     if(end == 0){
         var label = new Label('ランキング登録');

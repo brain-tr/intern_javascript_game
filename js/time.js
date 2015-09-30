@@ -20,31 +20,15 @@ function timeEnter(enterMinutes){
             time.addChild(short);
             time.addChild(long);
             
-            //支出の計算
-            for(var i = 0; i < matchings.length; i++){
-                //週の単価を足す
-                if(matchings[i][1][4] - matchings[i][0][2] < 0){
-                    var inMoneyTemp = 0;
-                }else{
-                    var inMoneyTemp = matchings[i][1][4] - matchings[i][0][2];
-                }
-                inMoney += inMoneyTemp;
-                //残り期間を計算
-                matchings[i][1][5]--;
-                if(matchings[i][1][5] == 0){
-                    //任期満了になった人材名を変数に格納
-                    endPerson.push(matchings[i][0][0]);
-                    //期間満了になったら終了
-                    matchings.splice(i, 1);
-                }
+            //トラブルが起きないかチェックする
+            if(troubleCheck()){
+                //発生判断フラグをfalseにする
+                createFlag = false;
+                game.replaceScene(createTroubleScean());
+            }else{
+                //週を進める
+                weekEnd();
             }
-            //維持費の減額
-            outMoney += 20;
-            //今日の成果を出す。
-            money = money + inMoney - outMoney;
-            
-            //週を進める
-            weekEnd();
             
             break;
         }

@@ -1,7 +1,6 @@
 RANKING_DATA = null;
 function createRankingBoard(userScore){
-
-
+    
     //ランキングの情報を更新する
     if (userScore == null) userScore = 0;
     getRanking(userScore);
@@ -78,6 +77,7 @@ function rankingScene(userScore){
         rankingText.addChild(label);
         rankingText.addChild(batch);
     }
+    tweetText = "";
     //ユーザーの結果を表示
     if(userScore > 0){
         var yourText = new Label(userScore + "万G稼ぎました。");
@@ -85,12 +85,21 @@ function rankingScene(userScore){
         yourText.font = "48px 'メイリオ'";
         yourText.textAlign = 'center';
         yourText.y = 340;
+        tweetText = userScore + "万G稼ぎましたよ";
     }else if(userScore < 0){
         var yourText = new Label(userScore + "万Gの負債です。");
         yourText.width = 700;
         yourText.font = "48px 'メイリオ'";
         yourText.textAlign = 'center';
         yourText.y = 340;
+        tweetText = userScore + "万Gの負債を抱えてしまった";
+    }else if(userScore == 0){
+        var yourText = new Label("過去TOP3");
+        yourText.width = 700;
+        yourText.font = "48px 'メイリオ'";
+        yourText.textAlign = 'center';
+        yourText.y = 340;
+        tweetText = "経営ゲームやってみよう";
     }
 
     //つぶやくボタンの作成
@@ -99,8 +108,7 @@ function rankingScene(userScore){
     tweet.x = 240;
     tweet.y = 430;
     tweet.addEventListener(Event.TOUCH_START,function(e){
-        var text = userScore + "万G稼いで歴代1位に";
-        window.open('http://twitter.com/home?status='+encodeURI(document.title)+'%0A%0A'+ text +'%0A%0A'+encodeURI(location.href)+'+%23インターン+%23経営ゲーム','_blank');
+        window.open('http://twitter.com/home?status='+encodeURI(document.title)+'%0A%0A'+ tweetText +'%0A%0A'+encodeURI(location.href)+'+%23インターン+%23経営ゲーム','_blank');
     });
     rankingText.addChild(tweet);
 

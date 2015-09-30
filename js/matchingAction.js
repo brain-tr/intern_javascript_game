@@ -264,12 +264,14 @@ var matchingResult = function(){
     matchingResultEnd.tl.moveTo(255,130,10).moveTo(255,130,50).moveTo(-300,130,10);
 
     if(resultGauge.width > 514){
+        //トラブルが起きる確率
+        var trouble = Math.floor(resultGauge.width / 584 * 100);
         var matchingResultText = new Label("採用");
         matchingResultText.font = "96px 'メイリオ'";
         matchingResultText.x = 700;
         matchingResultText.y = 155;
         matchingResultText.tl.moveTo(700,130,70).moveTo(255,130,10).moveTo(255,130,50);
-        matchings.push([tempPerson,tempMatter]);
+        matchings.push([tempPerson,tempMatter,trouble]);
     }else{
         var matchingResultText = new Label("不採用");
         matchingResultText.font = "96px 'メイリオ'";

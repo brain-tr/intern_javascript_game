@@ -53,7 +53,11 @@ window.onload = function() {
         './img/rank/rank3.png',
         './img/rank/rank4.png',
         './img/rank/rank5.png',
-        './img/button/tweet.gif'
+        './img/button/tweet.gif',
+        './img/troubleBar.gif',
+        './img/resultButton.gif',
+        './img/stopButton.gif',
+        './img/nextButton.gif'
     );
     game.onload = function() {
         //タイトルシーンの作成

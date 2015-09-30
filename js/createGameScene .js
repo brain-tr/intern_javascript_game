@@ -55,7 +55,7 @@ var createGameScene  = function(){
     personinfo.y = 80;                                      // 縦位置調整
     personinfo.font = "24px 'メイリオ'";　　　　　　　　　　　　 // フォント設定
     // 営業レベル
-    levelinfo = new Label("営業LV:　"+String(level)+"LV");   // ラベルを作る
+    levelinfo = new Label("営業LV:　"+String(level));        // ラベルを作る
     levelinfo.x = 20;                                       // 横位置調整
     levelinfo.y = 115;                                      // 縦位置調整
     levelinfo.font = "24px 'メイリオ'";　　　　　　　　　　　　　// フォント設定

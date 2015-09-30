@@ -45,7 +45,7 @@ var createStartScene = function() {
         startfnc();
         game.replaceScene(createGameScene());    // 現在表示しているシーンをゲームシーンに置き換える
     });
-    
+
     // ランキング画像にタッチイベントを設定
     rankingImage.addEventListener(Event.TOUCH_START, function(e) {
         createRankingBoard(0);

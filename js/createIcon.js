@@ -50,7 +50,7 @@ function createIcon(){
                 //経験値を取得位
                 experience++;
                 //アイコンを押した時にレベルが上がっていたら営業レベルを上げる
-                if(exp[level] == experience){
+                if(level * level * 3 == experience){
                     level++;
                 }
 
